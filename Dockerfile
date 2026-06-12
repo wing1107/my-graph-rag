@@ -13,14 +13,17 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 COPY requirements.txt .
 
-# 一次性安装：先固定 torch CPU 版，再装其余依赖
-# --extra-index-url 让 pip 同时查 PyPI 和 torch CPU 源，避免 ResolutionImpossible
+# 1. 先装 torch CPU 版
+# 2. 装其余依赖（排除 langchain-huggingface，它的依赖声明与 langchain-core 1.x 冲突）
+# 3. 单独用 --no-deps 装 langchain-huggingface（运行时实际兼容）
 RUN pip install --no-cache-dir \
         torch==2.4.1 torchvision==0.19.1 \
         --index-url https://download.pytorch.org/whl/cpu \
+    && grep -v 'langchain-huggingface' requirements.txt > /tmp/req_no_hf.txt \
     && pip install --no-cache-dir \
         --extra-index-url https://download.pytorch.org/whl/cpu \
-        -r requirements.txt
+        -r /tmp/req_no_hf.txt \
+    && pip install --no-cache-dir --no-deps langchain-huggingface==0.3.0
 
 # ============================================================
 # Stage 2: 运行镜像（只保留运行时必需内容）
