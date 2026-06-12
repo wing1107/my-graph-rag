@@ -13,13 +13,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 COPY requirements.txt .
 
-# 先装 torch CPU 版（避免拉取带 CUDA 的默认包，节省 2GB+）
+# 一次性安装：先固定 torch CPU 版，再装其余依赖
+# --extra-index-url 让 pip 同时查 PyPI 和 torch CPU 源，避免 ResolutionImpossible
 RUN pip install --no-cache-dir \
         torch==2.4.1 torchvision==0.19.1 \
-        --index-url https://download.pytorch.org/whl/cpu
-
-# 再装其余依赖
-RUN pip install --no-cache-dir -r requirements.txt
+        --index-url https://download.pytorch.org/whl/cpu \
+    && pip install --no-cache-dir \
+        --extra-index-url https://download.pytorch.org/whl/cpu \
+        -r requirements.txt
 
 # ============================================================
 # Stage 2: 运行镜像（只保留运行时必需内容）
