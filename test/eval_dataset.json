@@ -1,0 +1,68 @@
+[
+  {
+    "id": "Q001",
+    "question": "什么是机器学习？",
+    "ground_truth_contexts": [
+      "机器学习是人工智能的一个分支，通过让计算机从数据中自动学习规律，而不是通过显式编程来解决问题。",
+      "机器学习算法包括监督学习、非监督学习和强化学习三大类，各类算法适用于不同的场景和数据类型。"
+    ],
+    "expected_answer_keywords": ["算法", "数据", "学习", "模型"],
+    "expected_grade_relevant": true,
+    "tags": ["basic", "ML"]
+  },
+  {
+    "id": "Q002",
+    "question": "深度学习与传统机器学习有什么区别？",
+    "ground_truth_contexts": [
+      "深度学习是机器学习的一个子领域，使用多层神经网络自动从原始数据中提取特征，无需人工特征工程。",
+      "传统机器学习依赖人工设计的特征，而深度学习通过堆叠多个非线性变换层自动学习数据的层次化表示。"
+    ],
+    "expected_answer_keywords": ["神经网络", "特征", "层"],
+    "expected_grade_relevant": true,
+    "tags": ["comparison", "DL", "ML"]
+  },
+  {
+    "id": "Q003",
+    "question": "RAG 系统中的检索增强是如何工作的？",
+    "ground_truth_contexts": [
+      "RAG（Retrieval-Augmented Generation）首先将用户问题转为向量，在知识库中检索最相关的文档片段，再将这些上下文拼接进 Prompt 送给 LLM 生成答案。",
+      "检索增强生成通过引入外部知识库，解决了纯生成模型知识截止和幻觉问题，使回答更有据可查。"
+    ],
+    "expected_answer_keywords": ["检索", "向量", "知识库", "生成"],
+    "expected_grade_relevant": true,
+    "tags": ["RAG", "retrieval"]
+  },
+  {
+    "id": "Q004_irrelevant",
+    "question": "今天天气怎么样？",
+    "ground_truth_contexts": [
+      "机器学习是人工智能的一个分支，通过让计算机从数据中自动学习规律。"
+    ],
+    "expected_answer_keywords": [],
+    "expected_grade_relevant": false,
+    "tags": ["irrelevant", "grader_test"],
+    "note": "此问题与知识库内容无关，grade_documents_node 应过滤文档，触发 rewrite 或返回 '不知道'"
+  },
+  {
+    "id": "Q005",
+    "question": "FAISS 向量索引有什么优势？",
+    "ground_truth_contexts": [
+      "FAISS 是 Facebook AI Research 开源的高效向量相似度搜索库，支持亿级向量的快速检索，常用于 RAG 系统的稠密检索阶段。",
+      "FAISS 支持多种索引类型，如 Flat（精确暴力搜索）和 IVF（倒排文件）系列，可在精度和速度之间灵活权衡。"
+    ],
+    "expected_answer_keywords": ["向量", "检索", "索引"],
+    "expected_grade_relevant": true,
+    "tags": ["FAISS", "retrieval"]
+  },
+  {
+    "id": "Q006_hallucination",
+    "question": "LangGraph 的 Self-RAG 是如何避免幻觉的？",
+    "ground_truth_contexts": [
+      "Self-RAG 在生成答案后，通过专门的 grade_answer 节点让 LLM 判断答案是否有文档依据（grounded/not_grounded），检测到幻觉时自动触发重新生成。"
+    ],
+    "expected_answer_keywords": ["幻觉", "grade", "验证", "生成"],
+    "expected_grade_relevant": true,
+    "hallucination_trigger_test": true,
+    "tags": ["hallucination", "self-RAG"]
+  }
+]

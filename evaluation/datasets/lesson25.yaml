@@ -1,0 +1,69 @@
+# 黄金集：日语教材《大家的日语 初级1》第25课系列 bad case 的回归保护
+#
+# 背景：lesson marker 注入和跨语言关键词映射让"第25课的会话内容"能从
+# rank=62 升到 top-3。本黄金集把那些 bad case 沉淀为可重复跑的硬性基线，
+# 防止后续修改悄悄回退。
+#
+# 命中判定（OR 关系，任一满足即算命中）：
+#   1) retrieved.page in expected_pages
+#   2) retrieved.content 包含 expected_keywords_any 任一项
+#   3) retrieved.source 文件名包含 expected_source（可选过滤）
+#
+# 向量库：faiss_multilingual（multilingual embedding）
+# 运行：python -m evaluation.cli run --dataset lesson25 --embedding multilingual --retriever hybrid
+dataset: lesson25
+source_filter: "大家的日语 初级1"
+embedding_hint: multilingual
+notes: |
+  种子黄金集，覆盖第25课的四个典型问题（会话/单词/语法 + 跨语言关键词）。
+  page 是 metadata.page，0-indexed；与 fitz / SmartPDFLoader 的页号一致。
+
+cases:
+  - id: lesson25_kaiwa
+    query: "第25课的会话内容是什么？"
+    expected_pages: [327]
+    expected_keywords_any:
+      - "いろいろ お世話に なりました"
+      - "【会话/对话】"
+    expected_source: "大家的日语 初级1"
+    notes: |
+      曾经的 bad case：会话页 327 因无课程编号 + 跨语言 fail，rank=62。
+      修复后期望进入 top 5。
+
+  - id: lesson25_vocab
+    query: "第25课的单词有哪些？"
+    expected_pages: [328, 329]
+    expected_keywords_any:
+      - "単語"
+      - "もし"
+      - "どうぞ お元気で"
+    expected_source: "大家的日语 初级1"
+
+  - id: lesson25_grammar
+    query: "第25课的语法"
+    expected_pages: [330]
+    expected_keywords_any:
+      - "普通形過去"
+      - "たら"
+      - "文法"
+    expected_source: "大家的日语 初级1"
+
+  - id: cross_lang_kaiwa_keyword
+    query: "会话"
+    expected_keywords_any:
+      - "会話"
+      - "【会话/对话】"
+    top_k_override: 10
+    notes: |
+      跨语言最小复现：中文"会话"应能匹配到日语"会話"页。
+      不限定 expected_pages，因为整本书有多个含会話的页面，
+      只要 top_k 内出现任一个即算命中。
+
+  - id: lesson25_overview
+    query: "第25课讲了什么？"
+    expected_pages: [326, 327, 328, 329, 330]
+    expected_keywords_any:
+      - "【第25課】"
+      - "第25課"
+    expected_source: "大家的日语 初级1"
+    notes: "高频概括类问题；任一第25课页都算命中。"

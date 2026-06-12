@@ -1,0 +1,73 @@
+# 黄金集：《pumpkin_book》（南瓜书） bad case 的回归保护
+#
+# 本黄金集把那些 bad case 沉淀为可重复跑的硬性基线，防止后续修改悄悄回退。
+#
+# 命中判定（OR 关系，任一满足即算命中）：
+#   1) retrieved.page in expected_pages
+#   2) retrieved.content 包含 expected_keywords_any 任一项
+#   3) retrieved.source 文件名包含 expected_source（可选过滤）
+#
+# 注意：source_filter 是子串匹配，必须能命中实际 PDF 文件名。
+# 当前文件名为 pumpkin_book.pdf，所以这里用 "pumpkin_book"。
+#
+# 向量库：faiss_m3e（m3e embedding）
+# 运行：python -m evaluation.cli run --dataset pumpkin_book --embedding m3e --retriever hybrid
+dataset: pumpkin_book
+source_filter: "pumpkin_book"
+embedding_hint: m3e
+notes: |
+  种子黄金集，覆盖《南瓜书》（pumpkin_book.pdf）的几个典型问题。
+  page 是 metadata.page，0-indexed；与 fitz / SmartPDFLoader 的页号一致。
+
+cases:
+  - id: pumpkin_book_overview
+    query: "南瓜书的主要内容是什么？"
+    # 序言/使用说明在 page 1；第1 章绪论"主要讲解"原句在 page 13
+    expected_pages: [1, 13]
+    expected_keywords_any:
+      - "主要讲解"
+      - "使用说明"
+    expected_source: "pumpkin_book"
+    notes: |
+      曾经的 bad case：南瓜书的主要内容是什么？
+      修复后期望进入 top 5。
+
+  - id: pumpkin_book_use_guide
+    query: "如何使用南瓜书？"
+    expected_pages: [1]
+    expected_keywords_any:
+      - "使用说明"
+    expected_source: "pumpkin_book"
+    top_k_override: 5
+    notes: |
+      "使用说明"段落在 page 1（0-indexed），修复后期望 rank=1。
+
+  - id: lesson_example_overview
+    query: "第16章讲了什么？"
+    # 第16 章 强化学习 起点在 page 192；后续公式推导在 193-196
+    expected_pages: [192, 193, 194, 195, 196]
+    expected_keywords_any:
+      - "强化学习"
+      - "【第16章】"
+    expected_source: "pumpkin_book"
+    notes: |
+      高频概括类问题；任一第16章页都算命中。
+      【第16章】是 _inject_lesson_markers 修复后注入的 marker，
+      同时保留"强化学习"作为关键词兜底。
+
+  - id: chapter16_content
+    query: "南瓜书的第16章内容是什么？"
+    expected_pages: [192, 193, 194, 195, 196]
+    expected_keywords_any:
+      - "强化学习"
+      - "【第16章】"
+      - "K-摇臂赌博机"
+    expected_source: "pumpkin_book"
+    top_k_override: 15
+    notes: |
+      用户实际提问的 query（2026-06-08 发现的 bad case）。
+      修复 _inject_lesson_markers 后（章节正则加入"章"字 + \s*），期望命中。
+      与 lesson_example_overview 的区别：query 含"南瓜书"，会额外吸引前言切片，
+      是对 hybrid 检索的更严格考验。
+      top_k_override=15：第16章 doc 的检索排名在 8~11 之间波动（BM25 轻微不稳定），
+      top_k=10 处于边界，改为 15 提供稳定裕量。

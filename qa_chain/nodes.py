@@ -1,0 +1,387 @@
+"""
+qa_chain/nodes.py — LangGraph Self-RAG 图的五个节点函数
+
+节点签名统一为：
+    fn(state: RAGState, config: RunnableConfig) -> dict
+
+运行时依赖（vectordb、llm）通过 config["configurable"] 注入，
+避免将重型对象放进可序列化的 state。
+
+拓扑：
+    retrieve → grade_documents → [不相关 + retry<MAX] → rewrite_query → retrieve(loop)
+                                ↓ [有相关 chunk]
+                             generate
+                                ↓
+                          grade_answer → [幻觉 + retry<MAX] → generate(loop)
+                                ↓ [可信]
+                               END
+"""
+
+from __future__ import annotations
+
+import logging
+import os
+from typing import Any
+
+from langchain_core.documents import Document
+from langchain_core.messages import AIMessage, HumanMessage
+from langchain_core.runnables import RunnableConfig
+
+from qa_chain.state import MAX_RETRIES, RAGState
+from qa_chain.prompt_templates import (
+    DEFAULT_TEMPLATE,
+    GRADE_DOC_PROMPT,
+    GRADE_ANSWER_PROMPT,
+    REWRITE_QUERY_PROMPT,
+)
+
+logger = logging.getLogger(__name__)
+
+# ── 轻量 grade 模型（glm-4-flash 够快、够便宜）──────────────────────────────
+# 通过 configurable 注入的 llm 是主问答 LLM；grade 节点用同一个实例即可，
+# 实际部署时可以在 configurable 里单独注入 "grade_llm"。
+_GRADE_MODEL_DEFAULT = "glm-4-flash"
+
+
+# ═══════════════════════════════════════════════════════════════
+# 工具函数
+# ═══════════════════════════════════════════════════════════════
+
+def _get_configurable(config: RunnableConfig, key: str, default=None) -> Any:
+    return (config or {}).get("configurable", {}).get(key, default)
+
+
+def _source_to_label(source: str) -> str:
+    return os.path.basename(source) if source else "(未知来源)"
+
+
+def _build_context(docs: list[Document]) -> str:
+    parts = []
+    for d in docs:
+        meta = d.metadata or {}
+        src = _source_to_label(meta.get("source", ""))
+        page = meta.get("page", "?")
+        parts.append(f"[来源: {src} | 页码: {page}]\n{d.page_content}")
+    return "\n\n---\n\n".join(parts)
+
+
+def _llm_text(llm: Any, prompt: str) -> str:
+    """统一调用 LLM，兼容 langchain LLM / ChatModel 两种接口。"""
+    result = llm.invoke(prompt) if hasattr(llm, "invoke") else llm(prompt)
+    if hasattr(result, "content"):
+        return result.content.strip()
+    return str(result).strip()
+
+
+# ═══════════════════════════════════════════════════════════════
+# 节点 1 — retrieve_node
+# ═══════════════════════════════════════════════════════════════
+
+def retrieve_node(state: RAGState, config: RunnableConfig) -> dict:
+    """
+    执行向量检索（dense 或 hybrid），将结果写入 state["documents"]。
+
+    检索使用 rewritten_question（若有）或原始 question。
+    vectordb 通过 config["configurable"]["vectordb"] 注入。
+    source_filter 来自 state，支持"知识库范围"切换。
+    """
+    vectordb = _get_configurable(config, "vectordb")
+    retriever_kind = _get_configurable(config, "retriever_kind", "dense")
+    top_k = state.get("top_k", 4)
+    question = state.get("rewritten_question") or state["question"]
+    allowed_sources = state.get("source_filter")
+
+    logger.info(
+        "[retrieve_node] question=%r retriever=%s top_k=%d scope=%s",
+        question,
+        retriever_kind,
+        top_k,
+        "ALL" if allowed_sources is None else f"{len(allowed_sources)} sources",
+    )
+
+    if retriever_kind == "hybrid":
+        from qa_chain.hybrid_retriever import hybrid_search_with_filter
+        pairs = hybrid_search_with_filter(
+            vectordb=vectordb,
+            query=question,
+            top_k=top_k,
+            allowed_sources=allowed_sources,
+        )
+        docs = [d for d, _ in pairs]
+    else:
+        # dense — 纯 FAISS
+        if allowed_sources is None:
+            pairs = vectordb.similarity_search_with_score(question, k=top_k)
+        else:
+            fetch_k = max(200, top_k * 20)
+            pairs = vectordb.similarity_search_with_score(
+                question,
+                k=top_k,
+                filter=lambda meta: meta.get("source") in allowed_sources,
+                fetch_k=fetch_k,
+            )
+        docs = [d for d, _ in pairs]
+
+    logger.info("[retrieve_node] 召回 %d 个切片", len(docs))
+    return {"documents": docs}
+
+
+# ═══════════════════════════════════════════════════════════════
+# 节点 2 — grade_documents_node
+# ═══════════════════════════════════════════════════════════════
+
+def grade_documents_node(state: RAGState, config: RunnableConfig) -> dict:
+    """
+    用 LLM 批量过滤不相关的 chunk。
+
+    对每个 Document 调用 GRADE_DOC_PROMPT（返回 yes/no），只保留 yes 的 doc。
+    若全部被过滤，清空 documents（不保留兜底），让 should_rewrite 感知
+    len(docs)=0 并触发改写重检索；超过 MAX_RETRIES 后 should_rewrite 会放行
+    到 generate，此时 generate 依靠 TEMPLATE_V4_COT 的通用知识兜底指令回答。
+    retry_count += 1 供 should_rewrite 条件边使用。
+    """
+    llm = _get_configurable(config, "llm")
+    docs: list[Document] = state.get("documents", [])
+    question = state.get("rewritten_question") or state["question"]
+    retry_count = state.get("retry_count", 0)
+
+    if not docs:
+        logger.info("[grade_documents_node] 无文档可评，跳过评分")
+        return {"documents": [], "retry_count": retry_count + 1}
+
+    if llm is None:
+        # 没有注入 LLM（如测试环境）—— 跳过评分，原样返回
+        logger.warning("[grade_documents_node] 未注入 LLM，跳过文档评分")
+        return {"documents": docs, "retry_count": retry_count + 1}
+
+    graded: list[Document] = []
+    for doc in docs:
+        prompt = GRADE_DOC_PROMPT.format(
+            question=question,
+            document=doc.page_content[:800],  # 截断节省 token
+        )
+        try:
+            verdict = _llm_text(llm, prompt).lower()
+        except Exception as e:
+            logger.warning("[grade_documents_node] LLM 评分失败: %s，保留该 doc", e)
+            verdict = "yes"
+
+        if "yes" in verdict:
+            graded.append(doc)
+        else:
+            meta = doc.metadata or {}
+            logger.debug(
+                "[grade_documents_node] 过滤: src=%s page=%s",
+                _source_to_label(meta.get("source", "")),
+                meta.get("page", "?"),
+            )
+
+    # 全部过滤时不保留兜底 doc：
+    # 旧逻辑保留 docs[0] 会骗过 should_rewrite（len(docs)=1 ≠ 0），
+    # 导致 generate 拿着无关 context 生成幻觉/混淆答案。
+    # 现在清空 documents，让 should_rewrite 感知 len(docs)=0 并触发改写重检索；
+    # 若已超过 MAX_RETRIES，should_rewrite 仍会放行到 generate，
+    # 此时 generate 依靠 TEMPLATE_V4_COT 中的通用知识兜底指令回答。
+    if not graded:
+        logger.info(
+            "[grade_documents_node] 全部 %d 个 doc 被过滤，清空文档触发改写重检索",
+            len(docs),
+        )
+
+    logger.info(
+        "[grade_documents_node] 原始 %d 个 → 保留 %d 个，retry_count → %d",
+        len(docs),
+        len(graded),
+        retry_count + 1,
+    )
+    return {"documents": graded, "retry_count": retry_count + 1}
+
+
+# ═══════════════════════════════════════════════════════════════
+# 节点 3 — rewrite_query_node
+# ═══════════════════════════════════════════════════════════════
+
+def rewrite_query_node(state: RAGState, config: RunnableConfig) -> dict:
+    """
+    LLM 改写问题，结果写入 state["rewritten_question"]。
+
+    在 grade_documents 判定"无相关 doc 且未超重试上限"时被路由到此节点。
+    改写后重新执行 retrieve_node（图中的循环边）。
+    """
+    llm = _get_configurable(config, "llm")
+    question = state["question"]
+
+    if llm is None:
+        logger.warning("[rewrite_query_node] 未注入 LLM，跳过改写")
+        return {"rewritten_question": question}
+
+    prompt = REWRITE_QUERY_PROMPT.format(question=question)
+    try:
+        rewritten = _llm_text(llm, prompt)
+    except Exception as e:
+        logger.warning("[rewrite_query_node] 改写失败: %s，使用原始问题", e)
+        rewritten = question
+
+    logger.info(
+        "[rewrite_query_node] 原始: %r → 改写: %r",
+        question,
+        rewritten,
+    )
+    return {"rewritten_question": rewritten}
+
+
+# ═══════════════════════════════════════════════════════════════
+# 节点 4 — generate_node
+# ═══════════════════════════════════════════════════════════════
+
+def generate_node(state: RAGState, config: RunnableConfig) -> dict:
+    """
+    用 DEFAULT_TEMPLATE（V4_COT）+ 过滤后的文档拼 context 调 LLM 生成答案。
+
+    同时将本轮问答追加到 chat_history（HumanMessage + AIMessage），
+    供多轮对话场景使用。
+
+    历史对话通过 config["configurable"]["history_len"] 控制使用长度（默认 3 轮）。
+    """
+    llm = _get_configurable(config, "llm")
+    history_len = _get_configurable(config, "history_len", 3)
+
+    docs: list[Document] = state.get("documents", [])
+    question = state.get("rewritten_question") or state["question"]
+    original_question = state["question"]
+    chat_history = state.get("chat_history", [])
+
+    context = _build_context(docs) if docs else "（未找到相关文档，请根据你的知识回答）"
+
+    # 防止 context 过长导致 API 500
+    MAX_CONTEXT_CHARS = 9000
+    if len(context) > MAX_CONTEXT_CHARS:
+        context = context[:MAX_CONTEXT_CHARS] + "\n...[内容已截断]"
+        logger.warning("[generate_node] context 超过 %d 字符，已截断", MAX_CONTEXT_CHARS)
+
+    # 拼接历史对话块（仅取最近 history_len 轮）
+    history_block = ""
+    if chat_history and history_len > 0:
+        recent = chat_history[-(history_len * 2):]  # 每轮 2 条（human + ai）
+        lines = []
+        for msg in recent:
+            if isinstance(msg, HumanMessage):
+                lines.append(f"用户: {msg.content}")
+            elif isinstance(msg, AIMessage):
+                lines.append(f"助手: {msg.content}")
+        if lines:
+            history_block = "以下是历史对话，仅供理解上下文：\n" + "\n".join(lines) + "\n\n"
+
+    # V4_COT 模板 {context} / {question} 插值
+    prompt = history_block + DEFAULT_TEMPLATE.format(
+        context=context,
+        question=question,
+    )
+
+    logger.info(
+        "[generate_node] question=%r docs=%d history_msgs=%d",
+        question,
+        len(docs),
+        len(chat_history),
+    )
+
+    if llm is None:
+        generation = "（LLM 未注入，无法生成答案）"
+        logger.error("[generate_node] 未注入 LLM")
+    else:
+        try:
+            generation = _llm_text(llm, prompt)
+        except Exception as e:
+            logger.exception("[generate_node] LLM 调用失败: %s", e)
+            generation = f"生成失败：{e}"
+
+    # 追加到 chat_history（用原始 question，不用 rewritten）
+    new_history = list(chat_history) + [
+        HumanMessage(content=original_question),
+        AIMessage(content=generation),
+    ]
+
+    logger.info("[generate_node] 生成完成，长度 %d 字符", len(generation))
+    return {"generation": generation, "chat_history": new_history, "hallucination_flag": False}
+
+
+# ═══════════════════════════════════════════════════════════════
+# 节点 5 — grade_answer_node
+# ═══════════════════════════════════════════════════════════════
+
+def grade_answer_node(state: RAGState, config: RunnableConfig) -> dict:
+    """
+    验证生成的答案是否有文档依据（防止幻觉）。
+
+    调用 GRADE_ANSWER_PROMPT（返回 grounded/not_grounded），
+    将结果写入 state["hallucination_flag"]：
+    - False → 答案可信，图路由到 END
+    - True  → 检测到幻觉，路由回 generate_node（最多重试 MAX_RETRIES 次）
+    """
+    llm = _get_configurable(config, "llm")
+    docs: list[Document] = state.get("documents", [])
+    generation = state.get("generation", "")
+
+    if llm is None or not docs or not generation:
+        # 无法评分时默认放行（保证可用性）
+        logger.warning("[grade_answer_node] 跳过答案评分（llm=%s docs=%d gen=%d）",
+                       llm is not None, len(docs), len(generation))
+        return {"hallucination_flag": False}
+
+    context = _build_context(docs)[:3000]  # 截断节省 token
+    prompt = GRADE_ANSWER_PROMPT.format(context=context, generation=generation[:1500])
+
+    try:
+        verdict = _llm_text(llm, prompt).lower()
+    except Exception as e:
+        logger.warning("[grade_answer_node] LLM 评分失败: %s，放行", e)
+        return {"hallucination_flag": False}
+
+    is_hallucination = "not_grounded" in verdict
+    logger.info(
+        "[grade_answer_node] verdict=%r hallucination=%s",
+        verdict[:50],
+        is_hallucination,
+    )
+    return {"hallucination_flag": is_hallucination}
+
+
+# ═══════════════════════════════════════════════════════════════
+# Conditional edge 决策函数
+# ═══════════════════════════════════════════════════════════════
+
+def should_rewrite(state: RAGState) -> str:
+    """
+    grade_documents 后的路由：
+    - 文档为空且 retry_count < MAX_RETRIES → "rewrite" → rewrite_query_node
+    - 否则 → "generate" → generate_node
+    """
+    docs = state.get("documents", [])
+    retry_count = state.get("retry_count", 0)
+
+    if not docs and retry_count < MAX_RETRIES:
+        logger.info(
+            "[should_rewrite] 文档为空且 retry_count=%d < %d，触发改写",
+            retry_count,
+            MAX_RETRIES,
+        )
+        return "rewrite"
+    return "generate"
+
+
+def should_retry_generate(state: RAGState) -> str:
+    """
+    grade_answer 后的路由：
+    - 幻觉检测 + retry_count < MAX_RETRIES → "generate" → generate_node 重试
+    - 否则 → "end"
+    """
+    hallucination = state.get("hallucination_flag", False)
+    retry_count = state.get("retry_count", 0)
+
+    if hallucination and retry_count < MAX_RETRIES:
+        logger.info(
+            "[should_retry_generate] 检测到幻觉，retry_count=%d，触发重新生成",
+            retry_count,
+        )
+        return "generate"
+    return "end"

@@ -1,0 +1,38 @@
+# 虚拟环境
+.venv/
+
+# 环境变量（含 API Key，绝不能提交）
+.env
+
+# 文档目录
+docs/
+
+# 向量库（体积大，且依赖本地 embedding 模型，各人需自行构建）
+data_base/vector_db/
+
+# OCR 缓存（可选，体积较大）
+data_base/ocr_cache/
+
+# 知识库原始文档（版权问题 + 体积）
+data_base/kownledge_db/
+
+# 会话数据库
+sessions/
+
+# Python 编译缓存
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# 评估报告（可选保留，体积不大）
+evaluation/reports/
+
+# IDE / 系统文件
+.vscode/
+.idea/
+*.DS_Store
+Thumbs.db
+
+# pytest 缓存
+.pytest_cache/
