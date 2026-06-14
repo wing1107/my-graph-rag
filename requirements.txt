@@ -40,9 +40,7 @@ transformers==4.44.2
 chromadb==1.5.9
 
 unstructured==0.22.31
-# PyMuPDF wheel (cp310 abi3, works on 3.10+); download from https://pypi.org/project/PyMuPDF/#files
-# then install locally: pip install pymupdf-*.whl
-# PyMuPDF>=1.23.0
+PyMuPDF>=1.23.0
 
 # OCR support for scanned PDFs
 easyocr==1.7.2
