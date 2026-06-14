@@ -1215,4 +1215,4 @@ with gr.Blocks(css=_MODAL_CSS) as demo:
     """)
 
 gr.close_all()
-demo.queue(default_concurrency_limit=2).launch()
+demo.queue(default_concurrency_limit=2).launch(server_name="0.0.0.0")
