@@ -78,8 +78,10 @@ def get_embedding(embedding: str, embedding_key: str = None, env_file: str = Non
         return ZhipuAIEmbeddings(zhipuai_api_key=embedding_key)
 
     elif embedding == "m3e":
-        primary = "moka-ai/m3e-base"
-        fallback = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
+        _local_m3e = os.environ.get("M3E_LOCAL_PATH", "")
+        primary = _local_m3e if (_local_m3e and _find_local_model([_local_m3e])) else "moka-ai/m3e-base"
+        _local_minilm = os.environ.get("MINILM_LOCAL_PATH", "")
+        fallback = _local_minilm if (_local_minilm and _find_local_model([_local_minilm])) else "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
         try:
             emb = HuggingFaceEmbeddings(model_name=primary)
             _embedding_cache["m3e"] = emb
@@ -93,7 +95,8 @@ def get_embedding(embedding: str, embedding_key: str = None, env_file: str = Non
 
     elif embedding == "multilingual":
         env_path = _get_local_multilingual_e5_path()
-        fallback_small = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
+        _local_minilm = os.environ.get("MINILM_LOCAL_PATH", "")
+        fallback_small = _local_minilm if (_local_minilm and _find_local_model([_local_minilm])) else "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
         primary_hf = "intfloat/multilingual-e5-large"
 
         candidates = [p for p in [env_path] if p]

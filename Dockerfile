@@ -48,14 +48,13 @@ COPY . .
 # 创建数据目录挂载点
 RUN mkdir -p data_base/kownledge_db data_base/vector_db data_base/ocr_cache sessions
 
-# 模型缓存目录
-ENV HF_HOME=/root/.cache/huggingface
-
-# 预下载 Embedding 模型（烘焙进镜像，接收方无需联网）
+# 预下载 Embedding 模型到固定本地路径（绕过 HF hub 缓存查找，离线可靠）
+ENV M3E_LOCAL_PATH=/app/models/m3e-base
+ENV MINILM_LOCAL_PATH=/app/models/paraphrase-multilingual-minilm-l12-v2
 RUN python -c "\
-from sentence_transformers import SentenceTransformer; \
-SentenceTransformer('moka-ai/m3e-base'); \
-SentenceTransformer('sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2')"
+from huggingface_hub import snapshot_download; \
+snapshot_download('moka-ai/m3e-base', local_dir='/app/models/m3e-base'); \
+snapshot_download('sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2', local_dir='/app/models/paraphrase-multilingual-minilm-l12-v2')"
 
 # 离线模式：模型已内置，禁止运行时联网
 ENV TRANSFORMERS_OFFLINE=1
