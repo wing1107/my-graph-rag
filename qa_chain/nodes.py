@@ -42,6 +42,59 @@ logger = logging.getLogger(__name__)
 # 实际部署时可以在 configurable 里单独注入 "grade_llm"。
 _GRADE_MODEL_DEFAULT = "glm-4-flash"
 
+# ── 中文数字→阿拉伯数字章节号映射 ─────────────────────────────────────────
+_CN_DIGIT = {"一": 1, "二": 2, "三": 3, "四": 4, "五": 5,
+             "六": 6, "七": 7, "八": 8, "九": 9}
+
+
+def _cn_num_to_int(cn: str) -> int:
+    """将简单中文数字串（支持百以内）转换为整数，失败返回 0。
+
+    支持形式：一、十、十六、二十、二十五、一百零三 等常见写法。
+    南瓜书共 16 章，实际只会碰到 1-20 以内的数字。
+    """
+    cn = cn.strip()
+    if not cn:
+        return 0
+    result = 0
+    # 处理 "百" 位
+    if "百" in cn:
+        parts = cn.split("百", 1)
+        hundreds = _CN_DIGIT.get(parts[0], 0) if parts[0] else 1
+        result += hundreds * 100
+        cn = parts[1]
+    # 处理 "十" 位
+    if "十" in cn:
+        parts = cn.split("十", 1)
+        tens = _CN_DIGIT.get(parts[0], 0) if parts[0] else 1
+        units = _CN_DIGIT.get(parts[1], 0) if parts[1] else 0
+        result += tens * 10 + units
+    else:
+        result += _CN_DIGIT.get(cn, 0)
+    return result
+
+
+import re as _re
+
+_CN_CHAPTER_RE = _re.compile(
+    r"第\s*([一二三四五六七八九十百零]+)\s*([章課课])"
+)
+
+
+def _normalize_chapter_numbers(text: str) -> str:
+    """将查询中的中文章节数字替换为阿拉伯数字，便于 BM25 精确匹配。
+
+    例：第十六章 → 第16章，第二十五課 → 第25課
+    对已是阿拉伯数字的查询无影响。
+    """
+    def _replace(m: "_re.Match") -> str:
+        num = _cn_num_to_int(m.group(1))
+        if num > 0:
+            return f"第{num}{m.group(2)}"
+        return m.group(0)  # 无法解析则保留原文
+
+    return _CN_CHAPTER_RE.sub(_replace, text)
+
 
 # ═══════════════════════════════════════════════════════════════
 # 工具函数
@@ -89,6 +142,9 @@ def retrieve_node(state: RAGState, config: RunnableConfig) -> dict:
     retriever_kind = _get_configurable(config, "retriever_kind", "dense")
     top_k = state.get("top_k", 4)
     question = state.get("rewritten_question") or state["question"]
+    # 将中文章节数字（如"第十六章"）规范化为阿拉伯数字（"第16章"），
+    # 避免 BM25 因字符不匹配导致章节内容完全检索不到。
+    question = _normalize_chapter_numbers(question)
     allowed_sources = state.get("source_filter")
 
     logger.info(

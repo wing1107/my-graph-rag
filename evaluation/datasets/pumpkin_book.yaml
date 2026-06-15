@@ -71,3 +71,19 @@ cases:
       是对 hybrid 检索的更严格考验。
       top_k_override=15：第16章 doc 的检索排名在 8~11 之间波动（BM25 轻微不稳定），
       top_k=10 处于边界，改为 15 提供稳定裕量。
+
+  - id: chapter16_cn_numeral
+    query: "南瓜书第十六章内容是什么？"
+    expected_pages: [192, 193, 194, 195, 196]
+    expected_keywords_any:
+      - "强化学习"
+      - "【第16章】"
+      - "K-摇臂赌博机"
+    expected_source: "pumpkin_book"
+    top_k_override: 15
+    notes: |
+      2026-06-15 发现的 bad case：用中文数字"十六"提问时，BM25 因字符不匹配
+      对第16章页面得分为 0，检索结果错误地返回第4章（决策树）。
+      修复：retrieve_node 入口 + retrieval_runner._run_case 均调用
+      _normalize_chapter_numbers() 将"第十六章"预处理为"第16章"，再送入 hybrid 检索。
+      修复后 rank#1=8，与 chapter16_content 行为一致；top_k_override=15 提供稳定裕量。

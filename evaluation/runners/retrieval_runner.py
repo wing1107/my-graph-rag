@@ -33,6 +33,7 @@ from evaluation.schemas import (  # noqa: E402
     GoldenDataset,
     RetrievedDoc,
 )
+from qa_chain.nodes import _normalize_chapter_numbers  # noqa: E402
 
 
 def _resolve_persist_path(embedding: str, persist_path: Optional[str] = None) -> str:
@@ -88,15 +89,16 @@ def _run_case(
     hybrid_retriever: Any = None,
 ) -> CaseResult:
     top_k = case.top_k_override or default_top_k
+    query = _normalize_chapter_numbers(case.query)
 
     t0 = time.perf_counter()
     try:
         if retriever_kind == "hybrid":
             if hybrid_retriever is None:
                 raise ValueError("retriever_kind=hybrid 需要传入 hybrid_retriever")
-            results = _search_hybrid(case.query, top_k, hybrid_retriever)
+            results = _search_hybrid(query, top_k, hybrid_retriever)
         else:
-            results = _search_dense(vectordb, case.query, top_k, source_filter)
+            results = _search_dense(vectordb, query, top_k, source_filter)
     except Exception as exc:
         return CaseResult(
             case_id=case.id,

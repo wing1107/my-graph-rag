@@ -6,8 +6,9 @@
 
 services:
   app:
-    image: wing1107/my-graph-rag:latest   # 改成你的 Docker Hub 用户名
-    # 本地开发时可改为从源码构建：
+    # ── 方式一：从 Docker Hub 拉取现成镜像（无需代码，直接 docker compose up）──
+    image: wing1107/my-graph-rag:latest
+    # ── 方式二：git clone 代码后本地构建（注释掉 image，取消注释 build）──
     # build: .
     ports:
       - "7860:7860"
