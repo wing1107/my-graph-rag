@@ -243,7 +243,7 @@ class SmartPDFLoader:
         ]
         try:
             response = MultiModalConversation.call(
-                model="qwen-vl-max",
+                model="qwen3.6-plus",
                 messages=messages,
                 api_key=api_key,
             )

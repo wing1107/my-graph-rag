@@ -18,6 +18,8 @@ import re
 import shutil
 import sys
 import tempfile
+import threading
+import time
 import uuid
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -62,7 +64,7 @@ logger = logging.getLogger("run_gradio")
 # ── 常量 ─────────────────────────────────────────────────────────────────
 LLM_MODEL_DICT = {
     "zhipuai": ["glm-4-flash", "glm-4", "chatglm_pro", "chatglm_std", "chatglm_lite"],
-    "qwen": ["qwen-turbo", "qwen-plus", "qwen-max", "qwen-long"],
+    "qwen": ["qwen3-max", "qwen-flash", "qwen-plus", "qwen-long"],
 }
 LLM_MODEL_LIST = sum(list(LLM_MODEL_DICT.values()), [])
 INIT_LLM = "glm-4-flash"
@@ -119,14 +121,18 @@ def _inject_lesson_markers(split_docs):
     """为缺少课程编号的切片添加课程标记，为日语关键词添加中文翻译。"""
     import re as _re
 
-    lesson_pattern = _re.compile(r'第(\d+)\s*([章課课])')
+    # OCR 会将「第26課」拆成「第 26 か 課」（数字和汉字之间有空格，汉字读音假名夹在中间）。
+    # 旧模式 r'第(\d+)\s*' 要求数字紧跟「第」，无法匹配带空格的格式。
+    # 新模式：允许「第」后有空格，允许数字与章节字之间有一个假名读音（如「か」「しょう」）。
+    lesson_pattern = _re.compile(r'第\s*(\d+)(?:\s*[ぁ-んァ-ン])?\s*([章課课])')
     jp_to_cn_mappings = [
-        (_re.compile(r'会話'), '【会话/对话】'),
-        (_re.compile(r'単語'), '【单词/词汇】'),
-        (_re.compile(r'文法'), '【语法】'),
-        (_re.compile(r'練習'), '【练习】'),
-        (_re.compile(r'例文'), '【例句】'),
-        (_re.compile(r'文型'), '【句型】'),
+        # 使用 \s* 兼容 OCR 将「会話」拆成「会 話」的情况（页面上方有假名注音导致空格）
+        (_re.compile(r'会\s*話'), '【会话/对话】'),
+        (_re.compile(r'単\s*語'), '【单词/词汇】'),
+        (_re.compile(r'文\s*法'), '【语法】'),
+        (_re.compile(r'練\s*習'), '【练习】'),
+        (_re.compile(r'例\s*文'), '【例句】'),
+        (_re.compile(r'文\s*型'), '【句型】'),
     ]
 
     page_to_lesson = {}
@@ -334,15 +340,70 @@ def build_faiss_db_info(
         progress(0.88, desc="构建 FAISS")
         os.makedirs(persist_directory, exist_ok=True)
 
-        def _embed_batched(docs_to_embed, emb_obj, batch_size=32):
-            import numpy as np
+        def _embed_batched(docs_to_embed, emb_obj, batch_size=8):
             texts = [d.page_content for d in docs_to_embed]
             total = len(texts)
             all_embs = []
+
+            def _embed_one(text):
+                clean_text = (text or "").strip() or " "
+                if hasattr(emb_obj, "embed_query"):
+                    return emb_obj.embed_query(clean_text)
+                return emb_obj.embed_documents([clean_text])[0]
+
+            def _log_slow_batch(stop_event: threading.Event, done_cnt: int, total_cnt: int, size: int):
+                # 慢批次心跳：避免前端长时间无进展时误判为僵死。
+                start_t = time.monotonic()
+                while not stop_event.wait(30):
+                    elapsed = int(time.monotonic() - start_t)
+                    logger.warning(
+                        "[向量化] Embedding 批次耗时较长：done=%d/%d, batch=%d, elapsed=%ds",
+                        done_cnt,
+                        total_cnt,
+                        size,
+                        elapsed,
+                    )
+
             for start in range(0, total, batch_size):
-                batch = texts[start: start + batch_size]
-                all_embs.extend(emb_obj.embed_documents(batch))
-                done = min(start + batch_size, total)
+                batch = [((t or "").strip() or " ") for t in texts[start: start + batch_size]]
+                done_before = start
+
+                stop_event = threading.Event()
+                heartbeat = threading.Thread(
+                    target=_log_slow_batch,
+                    args=(stop_event, done_before, total, len(batch)),
+                    daemon=True,
+                )
+                heartbeat.start()
+
+                batch_start_t = time.monotonic()
+                try:
+                    batch_embs = emb_obj.embed_documents(batch)
+                except Exception as batch_err:
+                    logger.warning("批量 Embedding 失败，降级逐条处理: %s", batch_err)
+                    batch_embs = []
+                    for idx, txt in enumerate(batch, 1):
+                        try:
+                            batch_embs.append(_embed_one(txt))
+                        except Exception as item_err:
+                            raise RuntimeError(
+                                f"第 {start + idx}/{total} 条文本 Embedding 失败: {item_err}"
+                            ) from item_err
+                finally:
+                    stop_event.set()
+
+                elapsed = time.monotonic() - batch_start_t
+                if elapsed >= 20:
+                    logger.warning(
+                        "[向量化] Embedding 慢批次：done=%d/%d, batch=%d, elapsed=%.1fs",
+                        min(start + len(batch), total),
+                        total,
+                        len(batch),
+                        elapsed,
+                    )
+
+                all_embs.extend(batch_embs)
+                done = min(start + len(batch), total)
                 yield done, total, all_embs
 
         def _build_from_embeddings(docs_to_embed, all_embs, emb_obj):
@@ -713,6 +774,7 @@ class Model_center:
     ) -> str:
         vectordb = self._get_vectordb(persist_path, embedding)
         llm = self._get_llm(model, temperature)
+        grade_llm = llm  # 与主模型保持一致
         allowed_sources = self._resolve_source_filter(scope, vectordb)
 
         graph = _get_rag_graph()
@@ -727,6 +789,7 @@ class Model_center:
                 "thread_id": thread_id,
                 "vectordb": vectordb,
                 "llm": llm,
+                "grade_llm": grade_llm,
                 "retriever_kind": RETRIEVER_KIND,
                 "history_len": history_len,
             }

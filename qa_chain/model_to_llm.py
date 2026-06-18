@@ -49,7 +49,7 @@ def model_to_llm(
             api_key = parse_llm_api_key("zhipuai")
         llm = ZhipuAILLM(model=model, zhipuai_api_key=api_key, temperature=temperature)
 
-    elif model in ["qwen-turbo", "qwen-plus", "qwen-max", "qwen-long", "qwen-max-longcontext"]:
+    elif model in ["qwen3-max", "qwen-flash", "qwen-plus", "qwen-long"]:
         if api_key is None:
             api_key = parse_llm_api_key("qwen")
         llm = QwenLLM(model=model, dashscope_api_key=api_key, temperature=temperature)

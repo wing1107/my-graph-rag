@@ -282,6 +282,46 @@ class TestGenerateNode(unittest.TestCase):
         result = generate_node(state, _config(llm=None))
         self.assertIn("LLM", result["generation"])
 
+    def test_retry_does_not_append_duplicate_history(self):
+        """[Bug修复] generate_node 重试时（retry_count > 0）不应向 chat_history 追加新消息。
+
+        修复前：每次 generate_node 被调用都追加 HumanMessage + AIMessage，
+        同一问题重试 N 次会导致 history 膨胀 2N 条消息。
+        修复后：retry_count > 0 时仅更新最后一条 AIMessage。
+        """
+        docs = [_make_doc("内容")]
+        llm = _make_llm("重试后的更好答案")
+        # 模拟第一次 generate 已经追加过 2 条历史
+        existing_history = [
+            _FakeHumanMessage(content="问题"),
+            _FakeAIMessage(content="第一次的差答案"),
+        ]
+        state = _base_state(
+            question="问题",
+            documents=docs,
+            chat_history=existing_history,
+            retry_count=1,  # 表示这是重试调用
+        )
+        result = generate_node(state, _config(llm=llm))
+        # history 长度应仍为 2（不增加），最后一条 AIMessage 被更新
+        self.assertEqual(len(result["chat_history"]), 2)
+        self.assertEqual(result["chat_history"][-1].content, "重试后的更好答案")
+
+    def test_first_generate_appends_to_history(self):
+        """[Bug修复] retry_count=0 时（首次调用），应正常追加 2 条消息。"""
+        docs = [_make_doc("内容")]
+        llm = _make_llm("首次答案")
+        state = _base_state(
+            question="问题",
+            documents=docs,
+            chat_history=[],
+            retry_count=0,
+        )
+        result = generate_node(state, _config(llm=llm))
+        self.assertEqual(len(result["chat_history"]), 2)
+        self.assertIsInstance(result["chat_history"][0], _FakeHumanMessage)
+        self.assertIsInstance(result["chat_history"][1], _FakeAIMessage)
+
 
 # ════════════════════════════════════════════════════════════════
 # grade_answer_node 测试
@@ -311,6 +351,41 @@ class TestGradeAnswerNode(unittest.TestCase):
         state = _base_state(documents=docs, generation="回答")
         result = grade_answer_node(state, _config(llm=None))
         self.assertFalse(result["hallucination_flag"])
+
+    def test_retry_count_increments_on_hallucination(self):
+        """[Bug修复] not_grounded 时 grade_answer_node 应递增 retry_count。
+
+        修复前：grade_answer_node 从不递增 retry_count，导致
+        should_retry_generate 的 retry_count < MAX_RETRIES 永远为真，
+        generate → grade_answer 陷入无限循环。
+        """
+        docs = [_make_doc("真实内容")]
+        llm = _make_llm("not_grounded")
+        state = _base_state(documents=docs, generation="捏造的回答", retry_count=0)
+        result = grade_answer_node(state, _config(llm=llm))
+        self.assertTrue(result["hallucination_flag"])
+        self.assertEqual(result["retry_count"], 1)
+
+    def test_retry_count_increments_when_grounded(self):
+        """[Bug修复] grounded 时也应递增 retry_count（统一行为，配合 should_retry_generate 终止逻辑）。"""
+        docs = [_make_doc("真实内容")]
+        llm = _make_llm("grounded")
+        state = _base_state(documents=docs, generation="正常回答", retry_count=1)
+        result = grade_answer_node(state, _config(llm=llm))
+        self.assertFalse(result["hallucination_flag"])
+        self.assertEqual(result["retry_count"], 2)
+
+    def test_loop_terminates_after_max_retries(self):
+        """[Bug修复] grade_answer 连续返回 not_grounded 时，should_retry_generate
+        在 retry_count >= MAX_RETRIES 后应路由到 end，而不是继续循环。
+        """
+        docs = [_make_doc("内容")]
+        llm = _make_llm("not_grounded")
+        # 模拟已重试 MAX_RETRIES - 1 次，本次 grade_answer 后 retry_count 将达到 MAX_RETRIES
+        state = _base_state(documents=docs, generation="捏造", retry_count=MAX_RETRIES - 1)
+        result = grade_answer_node(state, _config(llm=llm))
+        # 路由函数应返回 end，终止循环
+        self.assertEqual(should_retry_generate(result), "end")
 
 
 # ════════════════════════════════════════════════════════════════

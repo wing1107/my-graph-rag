@@ -50,7 +50,7 @@ def get_completion(
         "glm-3-turbo", "glm-4-plus", "glm-4-long",
     ]:
         return get_completion_glm(prompt, model, temperature, api_key, max_tokens)
-    elif model in ["qwen-turbo", "qwen-plus", "qwen-max", "qwen-long", "qwen-max-longcontext"]:
+    elif model in ["qwen3-max", "qwen-flash", "qwen-plus", "qwen-long"]:
         return get_completion_qwen(prompt, model, temperature, api_key, max_tokens)
     else:
         return "不正确的模型"

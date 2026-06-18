@@ -415,7 +415,7 @@ def build_parser() -> argparse.ArgumentParser:
     p_e2e.add_argument("--embedding", required=True, help="embedding 名称（如 m3e / multilingual）")
     p_e2e.add_argument(
         "--model", required=True,
-        help="LLM 模型名称，如 glm-4-flash / glm-4-air / qwen-turbo",
+        help="LLM 模型名称，如 glm-4-flash / glm-4-air / qwen3-max",
     )
     p_e2e.add_argument("--top-k", type=int, default=4, dest="top_k")
     p_e2e.add_argument("--notes", default=None)

@@ -195,8 +195,11 @@ def grade_documents_node(state: RAGState, config: RunnableConfig) -> dict:
     len(docs)=0 并触发改写重检索；超过 MAX_RETRIES 后 should_rewrite 会放行
     到 generate，此时 generate 依靠 TEMPLATE_V4_COT 的通用知识兜底指令回答。
     retry_count += 1 供 should_rewrite 条件边使用。
+
+    优先使用 configurable 中注入的 grade_llm（轻量评分专用），
+    不存在时退回主 llm，保证与主模型切换解耦。
     """
-    llm = _get_configurable(config, "llm")
+    llm = _get_configurable(config, "grade_llm") or _get_configurable(config, "llm")
     docs: list[Document] = state.get("documents", [])
     question = state.get("rewritten_question") or state["question"]
     retry_count = state.get("retry_count", 0)
@@ -334,11 +337,13 @@ def generate_node(state: RAGState, config: RunnableConfig) -> dict:
         question=question,
     )
 
+    retry_count = state.get("retry_count", 0)
     logger.info(
-        "[generate_node] question=%r docs=%d history_msgs=%d",
+        "[generate_node] question=%r docs=%d history_msgs=%d retry_count=%d",
         question,
         len(docs),
         len(chat_history),
+        retry_count,
     )
 
     if llm is None:
@@ -351,11 +356,18 @@ def generate_node(state: RAGState, config: RunnableConfig) -> dict:
             logger.exception("[generate_node] LLM 调用失败: %s", e)
             generation = f"生成失败：{e}"
 
-    # 追加到 chat_history（用原始 question，不用 rewritten）
-    new_history = list(chat_history) + [
-        HumanMessage(content=original_question),
-        AIMessage(content=generation),
-    ]
+    # 只在第一次生成时追加到 chat_history（retry_count=0 说明是首次进入 generate）；
+    # 重试时（retry_count>0）不追加，避免同一问题在历史中重复堆积。
+    if retry_count == 0:
+        new_history = list(chat_history) + [
+            HumanMessage(content=original_question),
+            AIMessage(content=generation),
+        ]
+    else:
+        # 重试：更新最后一条 AIMessage 为最新回答
+        new_history = list(chat_history)
+        if new_history and isinstance(new_history[-1], AIMessage):
+            new_history[-1] = AIMessage(content=generation)
 
     logger.info("[generate_node] 生成完成，长度 %d 字符", len(generation))
     return {"generation": generation, "chat_history": new_history, "hallucination_flag": False}
@@ -373,8 +385,11 @@ def grade_answer_node(state: RAGState, config: RunnableConfig) -> dict:
     将结果写入 state["hallucination_flag"]：
     - False → 答案可信，图路由到 END
     - True  → 检测到幻觉，路由回 generate_node（最多重试 MAX_RETRIES 次）
+
+    优先使用 configurable 中注入的 grade_llm（轻量评分专用），
+    不存在时退回主 llm，保证与主模型切换解耦。
     """
-    llm = _get_configurable(config, "llm")
+    llm = _get_configurable(config, "grade_llm") or _get_configurable(config, "llm")
     docs: list[Document] = state.get("documents", [])
     generation = state.get("generation", "")
 
@@ -394,12 +409,14 @@ def grade_answer_node(state: RAGState, config: RunnableConfig) -> dict:
         return {"hallucination_flag": False}
 
     is_hallucination = "not_grounded" in verdict
+    retry_count = state.get("retry_count", 0)
     logger.info(
-        "[grade_answer_node] verdict=%r hallucination=%s",
+        "[grade_answer_node] verdict=%r hallucination=%s retry_count → %d",
         verdict[:50],
         is_hallucination,
+        retry_count + 1,
     )
-    return {"hallucination_flag": is_hallucination}
+    return {"hallucination_flag": is_hallucination, "retry_count": retry_count + 1}
 
 
 # ═══════════════════════════════════════════════════════════════

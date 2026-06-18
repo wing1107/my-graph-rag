@@ -3,7 +3,7 @@
 
 """阿里云通义千问（DashScope）LangChain 适配类。
 
-通过官方 dashscope SDK 调用千问系列模型（qwen-turbo / qwen-plus / qwen-max / qwen-long 等），
+通过官方 dashscope SDK 调用千问系列模型（qwen3-max / qwen-flash / qwen3-plus / qwen3-long 等），
 对外暴露与项目其它 *_llm.py 模块一致的 LangChain LLM 接口，便于在 RAG 链路中复用。
 """
 
@@ -43,7 +43,7 @@ logger = logging.getLogger(__name__)
 class QwenLLM(Self_LLM):
     """阿里云千问 LLM 封装类（基于 dashscope SDK）。"""
 
-    model: str = "qwen-turbo"
+    model: str = "qwen3-max"
     dashscope_api_key: Optional[str] = None
     streaming: Optional[bool] = False
     request_timeout: Optional[int] = 60
@@ -53,7 +53,7 @@ class QwenLLM(Self_LLM):
 
     def __init__(self, **kwargs: Any) -> None:
         super().__init__(**kwargs)
-        self.model = kwargs.get("model", getattr(self, "model", "qwen-turbo"))
+        self.model = kwargs.get("model", getattr(self, "model", "qwen3-max"))
         self.dashscope_api_key = (
             kwargs.get("dashscope_api_key")
             or os.getenv("DASHSCOPE_API_KEY")
