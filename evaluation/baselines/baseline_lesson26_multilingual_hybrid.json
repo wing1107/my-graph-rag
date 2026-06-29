@@ -1,0 +1,638 @@
+{
+  "meta": {
+    "dataset": "lesson26",
+    "embedding": "multilingual",
+    "top_k": 10,
+    "persist_path": "C:\\Workspace\\other\\AI_Practice\\mytest\\myGraphRagProject\\data_base\\vector_db\\faiss_multilingual",
+    "retriever": "hybrid",
+    "timestamp": "2026-06-29T15:35:31",
+    "notes": null
+  },
+  "cases": [
+    {
+      "case_id": "lesson26_kaiwa",
+      "query": "第26课的会话内容是什么？",
+      "top_k": 10,
+      "retrieved": [
+        {
+          "rank": 1,
+          "score": 1.0,
+          "page": 9,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myGraphRagProject\\data_base\\kownledge_db\\大家的日语初级2（第二版）\\大家的日语初级2（第二版）.pdf",
+          "content_preview": "【第26课】\n练习C是为了培养交流能力的练习。根据情况替换会话中原有的有下划线\n的部分进行会话。但是为了避免变成一种只是单纯地进行词语替换的练习，\n希望学习者根据自身情况，变换范文所提供的替换选项，扩充内容，进一步\n将场面扩展进行练习。\n练习B、练习C的答案收录于“学习辅导用书”。\n⑦ 练习题\n练习题包括听力题、语法题、阅读题和扩展课题。听力题是回答简短问题和\n听简短会话后写要点。语法题用来检查对",
+          "content_len": 486
+        },
+        {
+          "rank": 2,
+          "score": 0.5,
+          "page": 11,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myGraphRagProject\\data_base\\kownledge_db\\大家的日语初级2（第二版）\\大家的日语初级2（第二版）.pdf",
+          "content_preview": "【第26课】\n有效的使用方法\n\n1. 记单词\n“学习辅导用书”的各课都有新的单词和\n译文出现。我们可以一边用这些新单词\n进行造句练习，一边记住它们。\n\n2. 做句型练习\n抓住句型的正确含义，出声做“练习A”\n和“练习B”，反复练习至完全掌握为止。\n\n3. 做会话练习\n“练习C”是一段比较简短而完整的会话。\n不要只做简单模式的练习，要继续话题，\n充实会话内容。\n\nviii\n会话中所列举的都是日常生活",
+          "content_len": 498
+        },
+        {
+          "rank": 3,
+          "score": 0.3333333333333333,
+          "page": 24,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myGraphRagProject\\data_base\\kownledge_db\\大家的日语初级2（第二版）\\大家的日语初级2（第二版）.pdf",
+          "content_preview": "【第26課】 【第26课】\n〈連語〉 随时\n〈連語〉 在任何地方都~\n〈連語〉 任何人都~\n〈連語〉 什么都~\n〈名〉 垃圾\n〈動Ⅰ〉 扔\n扔垃圾。\n〈動Ⅰ〉 收拾\n收拾行李。\n〈名〉 可燃垃圾\n〈名〉 放置场所\n垃圾场\n〈名〉 旁边\n〈名〉 瓶\n〈名〉 罐\n〈名〉 煤气\n~公司\n〈名〉 煤气公司\n〈動Ⅲ〉 联系\n〈名〉 运动会\n〈連語〉 时机不好、不方便\n〈名〉 跳蚤市场\n〈副〉 极其、相当\n〈",
+          "content_len": 228
+        },
+        {
+          "rank": 4,
+          "score": 0.25,
+          "page": 16,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myGraphRagProject\\data_base\\kownledge_db\\大家的日语初级2（第二版）\\大家的日语初级2（第二版）.pdf",
+          "content_preview": "【第26课】 【会话/对话】\n目  录\n\nだい   か\n第26課 2\n  1. あしたから 旅行なんです。\n  2. 生け花を 習いたいんですが、いい 先生を 紹介して\n  いただけませんか。\nかいわ        だ\n会話: ごみは どこに 出したら いいですか\n\nだい   か\n第27課 14\n  1. わたしは 日本語が 少し 話せます。\n  2. 山が はっきり 見えます。\n  3. 駅の ",
+          "content_len": 465
+        },
+        {
+          "rank": 5,
+          "score": 0.2,
+          "page": 133,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myGraphRagProject\\data_base\\kownledge_db\\大家的日语初级2（第二版）\\大家的日语初级2（第二版）.pdf",
+          "content_preview": "【第35課】 【第35课】 【会话/对话】\nMP3 28 かいわ\n会話",
+          "content_len": 35
+        },
+        {
+          "rank": 6,
+          "score": 0.16666666666666666,
+          "page": 8,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myGraphRagProject\\data_base\\kownledge_db\\大家的日语初级2（第二版）\\大家的日语初级2（第二版）.pdf",
+          "content_preview": "II. 内容\n1. 主教材\n1) 课文\n课文从第26课开始至第50课，与《大家的日语 初级1(第二版)》(全25课)\n衔接，内容构成如下。\n① 句型\n列举各课所学基本句型。\n② 例句\n以一问一答的简短会话形式提示基本句型在日常生活中是如何使用的。另外\n还有新出现的副词和接续词的使用方法以及基本句型以外的学习项目。\n③ 会话\n由生活在日本的外国人展现在各种各样的场面下进行的会话。各课的学习内\n容中还",
+          "content_len": 458
+        },
+        {
+          "rank": 7,
+          "score": 0.14285714285714285,
+          "page": 30,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myGraphRagProject\\data_base\\kownledge_db\\大家的日语初级2（第二版）\\大家的日语初级2（第二版）.pdf",
+          "content_preview": "【第26課】 【第26课】\n26\n5. 例1：毎朝 新聞を 読みますか。（いいえ・時間が ありません）\n→ いいえ、読みません。 時間が ないんです。\n例2：ビールは いかがですか。（すみません・きょうは 車で 来ました）\n→ すみません。 きょうは 車で 来たんです。\n1) よく 図書館へ 行きますか。\n（いいえ、あまり・うちから 遠いです） →\n2) きのう タワポンさんに 会いましたか。\n（",
+          "content_len": 487
+        },
+        {
+          "rank": 8,
+          "score": 0.125,
+          "page": 177,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myGraphRagProject\\data_base\\kownledge_db\\大家的日语初级2（第二版）\\大家的日语初级2（第二版）.pdf",
+          "content_preview": "【第38課】 【第38课】\n⑬ 初めて 会ったのは いつですか。\n……3年まえです。\n第一次见面是在什么时候？\n……3年前。\n⑬中强调了说话人想问的是“第一次见面”是在什么时候。\n本句型也经常用来纠正对方所说的事情，如⑭。\n⑭ バンコクで 生まれたんですか。\n……いいえ、生まれたのは チェンマイです。\n你是在曼谷出生的吗？\n……不是，我生在清迈。\n「~のは」之前的句子的主体不用「は」而要用「が」来",
+          "content_len": 252
+        },
+        {
+          "rank": 9,
+          "score": 0.1111111111111111,
+          "page": 20,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myGraphRagProject\\data_base\\kownledge_db\\大家的日语初级2（第二版）\\大家的日语初级2（第二版）.pdf",
+          "content_preview": "【第46课】 【会话/对话】\nだい か\n第46課 ........................................................................ 252\n1. 会議は 今から 始まる ところです。\n2. 彼は 3月に 大学を 卒業した ばかりです。\n3. ミラーさんは 会議室に いる はずです。\n会話:先週 直して もらった ばかりなのに、また……",
+          "content_len": 495
+        },
+        {
+          "rank": 10,
+          "score": 0.1,
+          "page": 63,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myGraphRagProject\\data_base\\kownledge_db\\大家的日语初级2（第二版）\\大家的日语初级2（第二版）.pdf",
+          "content_preview": "【第2课】\n4. それ/その/そう\n初級1第2課中で我们学习了用指示词指示所在场所内的物品。本课要学习用来指代对方所说的话或文章中出现的内容的「それ/その/そう」。\n1) 对话中\n⑩和⑪的「それ」、⑫的「その」、⑬的「そう」指的是对方之前刚刚讲过的内容。\n⑩ どこかで財布を落としてしまったんです。\n……それは大変ですね。すぐ交番に行かないと。\n不知在哪里把钱包弄丢了。\n……那可糟了，得赶紧去派出所",
+          "content_len": 493
+        }
+      ],
+      "metrics": {
+        "hit_at_k": 1.0,
+        "recall_at_k": 0.0,
+        "mrr": 0.25,
+        "page_overlap": 0.0,
+        "keyword_hit_rate": 0.3,
+        "retrieval_latency_ms": 392.16
+      },
+      "matched_ranks": [
+        4,
+        5,
+        9
+      ],
+      "error": null
+    },
+    {
+      "case_id": "lesson26_bunpou",
+      "query": "第26课的文型和例句",
+      "top_k": 10,
+      "retrieved": [
+        {
+          "rank": 1,
+          "score": 1.0,
+          "page": 25,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myGraphRagProject\\data_base\\kownledge_db\\大家的日语初级2（第二版）\\大家的日语初级2（第二版）.pdf",
+          "content_preview": "【第26課】 【第26课】 【单词/词汇】\n敬语)\n〈名〉 宇宙飞船\n〈イ形〉 害怕、可怕\n〈名〉 航天站\n〈動Ⅰ〉 不一样\n〈名〉 宇航员\n26\n5\nたんご\n「単語」中的符号说明:\n1. ~ 替代词汇及句子。\n2. - 替代数字。\n3. 可以省略的语句放在[ ]里。\n4. 带有▲符号的词语为“学习辅导用书”的单词表中未出现的词汇或例句。\n5. 带有*符号的词语是作为关联词列出的,在那一课中并没有",
+          "content_len": 206
+        },
+        {
+          "rank": 2,
+          "score": 0.5,
+          "page": 22,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myGraphRagProject\\data_base\\kownledge_db\\大家的日语初级2（第二版）\\大家的日语初级2（第二版）.pdf",
+          "content_preview": "【第26课】 【例句】 【句型】\n26\n第26課\n文型\n1. あしたから 旅行なんです。\n2. 生け花を 習いたいんですが、いい 先生を 紹介して\nいただけませんか。\n例文\n1. 渡辺さんは 時々 大阪弁を 使いますね。\n大阪に 住んで いたんですか。\n……ええ、15歳まで 大阪に 住んで いました。\n2\n2. おもしろい デザインの 靴ですね。 どこで 買ったんですか。\n……エドヤストアで 買い",
+          "content_len": 424
+        },
+        {
+          "rank": 3,
+          "score": 0.3333333333333333,
+          "page": 46,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myGraphRagProject\\data_base\\kownledge_db\\大家的日语初级2（第二版）\\大家的日语初级2（第二版）.pdf",
+          "content_preview": "【第28课】 【例句】 【句型】\n28\n第28課\n文型\n1. 音楽を 聞きながら 食事します。\n2. 毎朝 ジョギングを して います。\n3. 地下鉄は 速いし、安いし、地下鉄で 行きましょう。\n例文\n26\n1. 眠い とき、ガムを かみながら 運転します。\n……そうですか。 わたしは 車を 止めて、しばらく 寝ます。\n2. 音楽を 聞きながら 勉強しますか。\n……いいえ。 勉強する ときは、音楽",
+          "content_len": 469
+        },
+        {
+          "rank": 4,
+          "score": 0.25,
+          "page": 25,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myGraphRagProject\\data_base\\kownledge_db\\大家的日语初级2（第二版）\\大家的日语初级2（第二版）.pdf",
+          "content_preview": "【第26課】 【第26课】\nきぶん\n気分がいい*\nきぶん わるい\n気分が悪い\nま あ\n間に合います(←間に合う③)\nじかん\n時間に間に合います。\nこんど(今度)①\nひろ\n拾います(←拾う⓪)\nばしょ(場所)①\nそんな⓪\n▲そんな人\nこんな~*\nあんな~*\nさが さが\n探します/捜します(←探す⓪/捜す⓪)\nボランティア(volunteer)②\nうちゅう(宇宙)①\nほしであきひこ(星出彰彦)\n~さま",
+          "content_len": 514
+        },
+        {
+          "rank": 5,
+          "score": 0.2,
+          "page": 9,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myGraphRagProject\\data_base\\kownledge_db\\大家的日语初级2（第二版）\\大家的日语初级2（第二版）.pdf",
+          "content_preview": "2. 学习辅导用书\n1) 第26课至第50课\n① 新单词及其翻译（此部分单词按类别分组，方便学习者系统学习）\n② 句型、例句、会话的翻译\n③ 有助于每课学习的参考词汇和日本情况的简单介绍\nvi",
+          "content_len": 96
+        },
+        {
+          "rank": 6,
+          "score": 0.16666666666666666,
+          "page": 30,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myGraphRagProject\\data_base\\kownledge_db\\大家的日语初级2（第二版）\\大家的日语初级2（第二版）.pdf",
+          "content_preview": "【第26課】 【第26课】\n26\n5. 例1：毎朝 新聞を 読みますか。（いいえ・時間が ありません）\n→ いいえ、読みません。 時間が ないんです。\n例2：ビールは いかがですか。（すみません・きょうは 車で 来ました）\n→ すみません。 きょうは 車で 来たんです。\n1) よく 図書館へ 行きますか。\n（いいえ、あまり・うちから 遠いです） →\n2) きのう タワポンさんに 会いましたか。\n（",
+          "content_len": 487
+        },
+        {
+          "rank": 7,
+          "score": 0.14285714285714285,
+          "page": 8,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myGraphRagProject\\data_base\\kownledge_db\\大家的日语初级2（第二版）\\大家的日语初级2（第二版）.pdf",
+          "content_preview": "II. 内容\n1. 主教材\n1) 课文\n课文从第26课开始至第50课，与《大家的日语 初级1(第二版)》(全25课)\n衔接，内容构成如下。\n① 句型\n列举各课所学基本句型。\n② 例句\n以一问一答的简短会话形式提示基本句型在日常生活中是如何使用的。另外\n还有新出现的副词和接续词的使用方法以及基本句型以外的学习项目。\n③ 会话\n由生活在日本的外国人展现在各种各样的场面下进行的会话。各课的学习内\n容中还",
+          "content_len": 458
+        },
+        {
+          "rank": 8,
+          "score": 0.125,
+          "page": 29,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myGraphRagProject\\data_base\\kownledge_db\\大家的日语初级2（第二版）\\大家的日语初级2（第二版）.pdf",
+          "content_preview": "【第26課】 【第26课】 【练习】\nれんしゅう\n練習B\n26\n1. 例：雨が降っています→雨が降っているんですか。\n1) 山へ行きます→\n2) エレベーターに乗りません→\n3) シュミットさんが作りました→\n4) 眠いです→\n例 1) ししし 2) 3) 4)\n2. 例：いいかばんです・どこで買いましたか（フリーマーケット）\n→いいかばんですね。どこで買ったんですか。\n……フリーマーケットで買い",
+          "content_len": 498
+        },
+        {
+          "rank": 9,
+          "score": 0.1111111111111111,
+          "page": 11,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myGraphRagProject\\data_base\\kownledge_db\\大家的日语初级2（第二版）\\大家的日语初级2（第二版）.pdf",
+          "content_preview": "【第26课】\n有效的使用方法\n\n1. 记单词\n“学习辅导用书”的各课都有新的单词和\n译文出现。我们可以一边用这些新单词\n进行造句练习，一边记住它们。\n\n2. 做句型练习\n抓住句型的正确含义，出声做“练习A”\n和“练习B”，反复练习至完全掌握为止。\n\n3. 做会话练习\n“练习C”是一段比较简短而完整的会话。\n不要只做简单模式的练习，要继续话题，\n充实会话内容。\n\nviii\n会话中所列举的都是日常生活",
+          "content_len": 498
+        },
+        {
+          "rank": 10,
+          "score": 0.1,
+          "page": 66,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myGraphRagProject\\data_base\\kownledge_db\\大家的日语初级2（第二版）\\大家的日语初级2（第二版）.pdf",
+          "content_preview": "【第2課】 【第2课】\n例 1) 2) 3) 4)\nしょう\n46",
+          "content_len": 32
+        }
+      ],
+      "metrics": {
+        "hit_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "mrr": 0.5,
+        "page_overlap": 0.1,
+        "keyword_hit_rate": 0.2,
+        "retrieval_latency_ms": 222.78
+      },
+      "matched_ranks": [
+        2,
+        3
+      ],
+      "error": null
+    },
+    {
+      "case_id": "lesson26_renshuu",
+      "query": "第26课的练习题",
+      "top_k": 10,
+      "retrieved": [
+        {
+          "rank": 1,
+          "score": 1.0,
+          "page": 9,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myGraphRagProject\\data_base\\kownledge_db\\大家的日语初级2（第二版）\\大家的日语初级2（第二版）.pdf",
+          "content_preview": "【第26课】\n练习C是为了培养交流能力的练习。根据情况替换会话中原有的有下划线\n的部分进行会话。但是为了避免变成一种只是单纯地进行词语替换的练习，\n希望学习者根据自身情况，变换范文所提供的替换选项，扩充内容，进一步\n将场面扩展进行练习。\n练习B、练习C的答案收录于“学习辅导用书”。\n⑦ 练习题\n练习题包括听力题、语法题、阅读题和扩展课题。听力题是回答简短问题和\n听简短会话后写要点。语法题用来检查对",
+          "content_len": 486
+        },
+        {
+          "rank": 2,
+          "score": 0.5,
+          "page": 32,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myGraphRagProject\\data_base\\kownledge_db\\大家的日语初级2（第二版）\\大家的日语初级2（第二版）.pdf",
+          "content_preview": "【第26課】 【第26课】\n12\n5. 例1： どうして 遅れたんですか。\n･･････バスが なかなか 来なかったんです。\n例2： スキー旅行に 行きますか。\n･･････いいえ。 ちょっと 都合が 悪いんです。\n1) どうして ビールを 飲まないんですか。\n･･････",
+          "content_len": 137
+        },
+        {
+          "rank": 3,
+          "score": 0.3333333333333333,
+          "page": 29,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myGraphRagProject\\data_base\\kownledge_db\\大家的日语初级2（第二版）\\大家的日语初级2（第二版）.pdf",
+          "content_preview": "【第26課】 【第26课】 【练习】\nれんしゅう\n練習B\n26\n1. 例：雨が降っています→雨が降っているんですか。\n1) 山へ行きます→\n2) エレベーターに乗りません→\n3) シュミットさんが作りました→\n4) 眠いです→\n例 1) ししし 2) 3) 4)\n2. 例：いいかばんです・どこで買いましたか（フリーマーケット）\n→いいかばんですね。どこで買ったんですか。\n……フリーマーケットで買い",
+          "content_len": 498
+        },
+        {
+          "rank": 4,
+          "score": 0.25,
+          "page": 24,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myGraphRagProject\\data_base\\kownledge_db\\大家的日语初级2（第二版）\\大家的日语初级2（第二版）.pdf",
+          "content_preview": "【第26課】 【第26课】\n〈連語〉 随时\n〈連語〉 在任何地方都~\n〈連語〉 任何人都~\n〈連語〉 什么都~\n〈名〉 垃圾\n〈動Ⅰ〉 扔\n扔垃圾。\n〈動Ⅰ〉 收拾\n收拾行李。\n〈名〉 可燃垃圾\n〈名〉 放置场所\n垃圾场\n〈名〉 旁边\n〈名〉 瓶\n〈名〉 罐\n〈名〉 煤气\n~公司\n〈名〉 煤气公司\n〈動Ⅲ〉 联系\n〈名〉 运动会\n〈連語〉 时机不好、不方便\n〈名〉 跳蚤市场\n〈副〉 极其、相当\n〈",
+          "content_len": 228
+        },
+        {
+          "rank": 5,
+          "score": 0.2,
+          "page": 30,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myGraphRagProject\\data_base\\kownledge_db\\大家的日语初级2（第二版）\\大家的日语初级2（第二版）.pdf",
+          "content_preview": "【第26課】 【第26课】\n26\n5. 例1：毎朝 新聞を 読みますか。（いいえ・時間が ありません）\n→ いいえ、読みません。 時間が ないんです。\n例2：ビールは いかがですか。（すみません・きょうは 車で 来ました）\n→ すみません。 きょうは 車で 来たんです。\n1) よく 図書館へ 行きますか。\n（いいえ、あまり・うちから 遠いです） →\n2) きのう タワポンさんに 会いましたか。\n（",
+          "content_len": 487
+        },
+        {
+          "rank": 6,
+          "score": 0.16666666666666666,
+          "page": 11,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myGraphRagProject\\data_base\\kownledge_db\\大家的日语初级2（第二版）\\大家的日语初级2（第二版）.pdf",
+          "content_preview": "【第26课】\n有效的使用方法\n\n1. 记单词\n“学习辅导用书”的各课都有新的单词和\n译文出现。我们可以一边用这些新单词\n进行造句练习，一边记住它们。\n\n2. 做句型练习\n抓住句型的正确含义，出声做“练习A”\n和“练习B”，反复练习至完全掌握为止。\n\n3. 做会话练习\n“练习C”是一段比较简短而完整的会话。\n不要只做简单模式的练习，要继续话题，\n充实会话内容。\n\nviii\n会话中所列举的都是日常生活",
+          "content_len": 498
+        },
+        {
+          "rank": 7,
+          "score": 0.14285714285714285,
+          "page": 9,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myGraphRagProject\\data_base\\kownledge_db\\大家的日语初级2（第二版）\\大家的日语初级2（第二版）.pdf",
+          "content_preview": "本教科书（包括《初级1》）中所学的动词形态与其后续句一起收录于书后。\n3) 学习项目一览\n以练习A为中心，对本教科书出现的学习项目进行了整理归纳，使练习A与\n句型、例句、练习B、练习C的关系清晰明了。\n4) 索引\n第1课至第50课的新单词和表达方式等分别与其最初出现的课数一起出现。\n5) 附带的MP3光盘\n本教科书附带的MP3光盘收录有各课的会话、练习题的录音。",
+          "content_len": 182
+        },
+        {
+          "rank": 8,
+          "score": 0.125,
+          "page": 20,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myGraphRagProject\\data_base\\kownledge_db\\大家的日语初级2（第二版）\\大家的日语初级2（第二版）.pdf",
+          "content_preview": "【第46課】 【第46课】\nさくいん\n索引(索引)................................................................................ 328",
+          "content_len": 109
+        },
+        {
+          "rank": 9,
+          "score": 0.1111111111111111,
+          "page": 7,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myGraphRagProject\\data_base\\kownledge_db\\大家的日语初级2（第二版）\\大家的日语初级2（第二版）.pdf",
+          "content_preview": "期积累下来的出版、研修事业的经验以及来自学习者和教育现场的意见和询问还原给大家\n的形式，对《大家的日语 初级1、2》进行了重新审订，就其中的一部分内容做了修改。\n修改的重点主要放在了提高运用能力和更换一些与时代潮流不相适应的词汇和场面上。\n在尊重来自学习者和教育现场的意见的同时，保留了本教科书原有的“易学易教”的特\n点，并对练习和练习题部分进行了充实。力图加强学习者自己把握情况，进行思考并加以\n表",
+          "content_len": 375
+        },
+        {
+          "rank": 10,
+          "score": 0.1,
+          "page": 66,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myGraphRagProject\\data_base\\kownledge_db\\大家的日语初级2（第二版）\\大家的日语初级2（第二版）.pdf",
+          "content_preview": "【第2課】 【第2课】\n例 1) 2) 3) 4)\nしょう\n46",
+          "content_len": 32
+        }
+      ],
+      "metrics": {
+        "hit_at_k": 1.0,
+        "recall_at_k": 0.5,
+        "mrr": 0.3333333333333333,
+        "page_overlap": 0.2,
+        "keyword_hit_rate": 0.1,
+        "retrieval_latency_ms": 259.65
+      },
+      "matched_ranks": [
+        3,
+        5
+      ],
+      "error": null
+    },
+    {
+      "case_id": "lesson26_mondai",
+      "query": "第26课的问题练习",
+      "top_k": 10,
+      "retrieved": [
+        {
+          "rank": 1,
+          "score": 1.0,
+          "page": 9,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myGraphRagProject\\data_base\\kownledge_db\\大家的日语初级2（第二版）\\大家的日语初级2（第二版）.pdf",
+          "content_preview": "【第26课】\n练习C是为了培养交流能力的练习。根据情况替换会话中原有的有下划线\n的部分进行会话。但是为了避免变成一种只是单纯地进行词语替换的练习，\n希望学习者根据自身情况，变换范文所提供的替换选项，扩充内容，进一步\n将场面扩展进行练习。\n练习B、练习C的答案收录于“学习辅导用书”。\n⑦ 练习题\n练习题包括听力题、语法题、阅读题和扩展课题。听力题是回答简短问题和\n听简短会话后写要点。语法题用来检查对",
+          "content_len": 486
+        },
+        {
+          "rank": 2,
+          "score": 0.5,
+          "page": 32,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myGraphRagProject\\data_base\\kownledge_db\\大家的日语初级2（第二版）\\大家的日语初级2（第二版）.pdf",
+          "content_preview": "【第26課】 【第26课】\n12\n5. 例1： どうして 遅れたんですか。\n･･････バスが なかなか 来なかったんです。\n例2： スキー旅行に 行きますか。\n･･････いいえ。 ちょっと 都合が 悪いんです。\n1) どうして ビールを 飲まないんですか。\n･･････",
+          "content_len": 137
+        },
+        {
+          "rank": 3,
+          "score": 0.3333333333333333,
+          "page": 29,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myGraphRagProject\\data_base\\kownledge_db\\大家的日语初级2（第二版）\\大家的日语初级2（第二版）.pdf",
+          "content_preview": "【第26課】 【第26课】 【练习】\nれんしゅう\n練習B\n26\n1. 例：雨が降っています→雨が降っているんですか。\n1) 山へ行きます→\n2) エレベーターに乗りません→\n3) シュミットさんが作りました→\n4) 眠いです→\n例 1) ししし 2) 3) 4)\n2. 例：いいかばんです・どこで買いましたか（フリーマーケット）\n→いいかばんですね。どこで買ったんですか。\n……フリーマーケットで買い",
+          "content_len": 498
+        },
+        {
+          "rank": 4,
+          "score": 0.25,
+          "page": 24,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myGraphRagProject\\data_base\\kownledge_db\\大家的日语初级2（第二版）\\大家的日语初级2（第二版）.pdf",
+          "content_preview": "【第26課】 【第26课】\n〈連語〉 随时\n〈連語〉 在任何地方都~\n〈連語〉 任何人都~\n〈連語〉 什么都~\n〈名〉 垃圾\n〈動Ⅰ〉 扔\n扔垃圾。\n〈動Ⅰ〉 收拾\n收拾行李。\n〈名〉 可燃垃圾\n〈名〉 放置场所\n垃圾场\n〈名〉 旁边\n〈名〉 瓶\n〈名〉 罐\n〈名〉 煤气\n~公司\n〈名〉 煤气公司\n〈動Ⅲ〉 联系\n〈名〉 运动会\n〈連語〉 时机不好、不方便\n〈名〉 跳蚤市场\n〈副〉 极其、相当\n〈",
+          "content_len": 228
+        },
+        {
+          "rank": 5,
+          "score": 0.2,
+          "page": 282,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myGraphRagProject\\data_base\\kownledge_db\\大家的日语初级2（第二版）\\大家的日语初级2（第二版）.pdf",
+          "content_preview": "【第46課】 【第46课】\nもんだい\n問題\n\nMP3 62 1.  1) _________________________________\n        2) _________________________________\n\nMP3 63 2.  1) (  )  2) (  )  3) (  )  4) (  )  5) (  )",
+          "content_len": 171
+        },
+        {
+          "rank": 6,
+          "score": 0.16666666666666666,
+          "page": 20,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myGraphRagProject\\data_base\\kownledge_db\\大家的日语初级2（第二版）\\大家的日语初级2（第二版）.pdf",
+          "content_preview": "【第46課】 【第46课】\nさくいん\n索引(索引)................................................................................ 328",
+          "content_len": 109
+        },
+        {
+          "rank": 7,
+          "score": 0.14285714285714285,
+          "page": 8,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myGraphRagProject\\data_base\\kownledge_db\\大家的日语初级2（第二版）\\大家的日语初级2（第二版）.pdf",
+          "content_preview": "II. 内容\n1. 主教材\n1) 课文\n课文从第26课开始至第50课，与《大家的日语 初级1(第二版)》(全25课)\n衔接，内容构成如下。\n① 句型\n列举各课所学基本句型。\n② 例句\n以一问一答的简短会话形式提示基本句型在日常生活中是如何使用的。另外\n还有新出现的副词和接续词的使用方法以及基本句型以外的学习项目。\n③ 会话\n由生活在日本的外国人展现在各种各样的场面下进行的会话。各课的学习内\n容中还",
+          "content_len": 458
+        },
+        {
+          "rank": 8,
+          "score": 0.125,
+          "page": 11,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myGraphRagProject\\data_base\\kownledge_db\\大家的日语初级2（第二版）\\大家的日语初级2（第二版）.pdf",
+          "content_preview": "【第26课】\n有效的使用方法\n\n1. 记单词\n“学习辅导用书”的各课都有新的单词和\n译文出现。我们可以一边用这些新单词\n进行造句练习，一边记住它们。\n\n2. 做句型练习\n抓住句型的正确含义，出声做“练习A”\n和“练习B”，反复练习至完全掌握为止。\n\n3. 做会话练习\n“练习C”是一段比较简短而完整的会话。\n不要只做简单模式的练习，要继续话题，\n充实会话内容。\n\nviii\n会话中所列举的都是日常生活",
+          "content_len": 498
+        },
+        {
+          "rank": 9,
+          "score": 0.1111111111111111,
+          "page": 25,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myGraphRagProject\\data_base\\kownledge_db\\大家的日语初级2（第二版）\\大家的日语初级2（第二版）.pdf",
+          "content_preview": "【第26課】 【第26课】 【单词/词汇】\n敬语)\n〈名〉 宇宙飞船\n〈イ形〉 害怕、可怕\n〈名〉 航天站\n〈動Ⅰ〉 不一样\n〈名〉 宇航员\n26\n5\nたんご\n「単語」中的符号说明:\n1. ~ 替代词汇及句子。\n2. - 替代数字。\n3. 可以省略的语句放在[ ]里。\n4. 带有▲符号的词语为“学习辅导用书”的单词表中未出现的词汇或例句。\n5. 带有*符号的词语是作为关联词列出的,在那一课中并没有",
+          "content_len": 206
+        },
+        {
+          "rank": 10,
+          "score": 0.1,
+          "page": 30,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myGraphRagProject\\data_base\\kownledge_db\\大家的日语初级2（第二版）\\大家的日语初级2（第二版）.pdf",
+          "content_preview": "【第26課】 【第26课】\n26\n5. 例1：毎朝 新聞を 読みますか。（いいえ・時間が ありません）\n→ いいえ、読みません。 時間が ないんです。\n例2：ビールは いかがですか。（すみません・きょうは 車で 来ました）\n→ すみません。 きょうは 車で 来たんです。\n1) よく 図書館へ 行きますか。\n（いいえ、あまり・うちから 遠いです） →\n2) きのう タワポンさんに 会いましたか。\n（",
+          "content_len": 487
+        }
+      ],
+      "metrics": {
+        "hit_at_k": 1.0,
+        "recall_at_k": 0.5,
+        "mrr": 0.5,
+        "page_overlap": 0.3,
+        "keyword_hit_rate": 0.2,
+        "retrieval_latency_ms": 249.43
+      },
+      "matched_ranks": [
+        2,
+        3,
+        5,
+        10
+      ],
+      "error": null
+    },
+    {
+      "case_id": "lesson26_overview",
+      "query": "第26课讲了什么？",
+      "top_k": 10,
+      "retrieved": [
+        {
+          "rank": 1,
+          "score": 1.0,
+          "page": 26,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myGraphRagProject\\data_base\\kownledge_db\\大家的日语初级2（第二版）\\大家的日语初级2（第二版）.pdf",
+          "content_preview": "【第26課】 【第26课】\n(1) 回答上述 1) 中的（3）、（4）这样使用「～んですか」的疑问句来说明理由时。\n⑤ どうして 遅（おく）れたんですか。\n你为什么迟到了？\n･･････バスが 来（こ）なかったんです。\n･･････公共汽车老不来。\n⑥ どう したんですか。\n你怎么了？\n･･････ちょっと 気分（きぶん）が 悪（わる）いんです。\n有点儿不舒服。\n(2) 说话人对自己所说的事情附加",
+          "content_len": 354
+        },
+        {
+          "rank": 2,
+          "score": 0.5,
+          "page": 24,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myGraphRagProject\\data_base\\kownledge_db\\大家的日语初级2（第二版）\\大家的日语初级2（第二版）.pdf",
+          "content_preview": "【第26課】 【第26课】\n〈連語〉 随时\n〈連語〉 在任何地方都~\n〈連語〉 任何人都~\n〈連語〉 什么都~\n〈名〉 垃圾\n〈動Ⅰ〉 扔\n扔垃圾。\n〈動Ⅰ〉 收拾\n收拾行李。\n〈名〉 可燃垃圾\n〈名〉 放置场所\n垃圾场\n〈名〉 旁边\n〈名〉 瓶\n〈名〉 罐\n〈名〉 煤气\n~公司\n〈名〉 煤气公司\n〈動Ⅲ〉 联系\n〈名〉 运动会\n〈連語〉 时机不好、不方便\n〈名〉 跳蚤市场\n〈副〉 极其、相当\n〈",
+          "content_len": 228
+        },
+        {
+          "rank": 3,
+          "score": 0.3333333333333333,
+          "page": 24,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myGraphRagProject\\data_base\\kownledge_db\\大家的日语初级2（第二版）\\大家的日语初级2（第二版）.pdf",
+          "content_preview": "【第26課】 【第26课】 【单词/词汇】\n26\nたんご\n単語\n~べん(~弁)\n▲おおさかべん(大阪弁)\nエドヤストア④\n遅れます(←遅れる⑩)\n時間に遅れます。\n見ます/診ます(←見る①/診る①)\nこっかいぎじどう(国会議事堂) ①⑥\nちょくせつ(直接) ①\nへいじつ(平日) ①\nいつでも①③\nどこでも*\nだれでも*\nなんでも(何でも)*\nごみ②\n出します(←出す①)\nごみを出します。\n片付きま",
+          "content_len": 521
+        },
+        {
+          "rank": 4,
+          "score": 0.25,
+          "page": 25,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myGraphRagProject\\data_base\\kownledge_db\\大家的日语初级2（第二版）\\大家的日语初级2（第二版）.pdf",
+          "content_preview": "【第26課】 【第26课】 【单词/词汇】\n敬语)\n〈名〉 宇宙飞船\n〈イ形〉 害怕、可怕\n〈名〉 航天站\n〈動Ⅰ〉 不一样\n〈名〉 宇航员\n26\n5\nたんご\n「単語」中的符号说明:\n1. ~ 替代词汇及句子。\n2. - 替代数字。\n3. 可以省略的语句放在[ ]里。\n4. 带有▲符号的词语为“学习辅导用书”的单词表中未出现的词汇或例句。\n5. 带有*符号的词语是作为关联词列出的,在那一课中并没有",
+          "content_len": 206
+        },
+        {
+          "rank": 5,
+          "score": 0.2,
+          "page": 30,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myGraphRagProject\\data_base\\kownledge_db\\大家的日语初级2（第二版）\\大家的日语初级2（第二版）.pdf",
+          "content_preview": "【第26課】 【第26课】\n26\n5. 例1：毎朝 新聞を 読みますか。（いいえ・時間が ありません）\n→ いいえ、読みません。 時間が ないんです。\n例2：ビールは いかがですか。（すみません・きょうは 車で 来ました）\n→ すみません。 きょうは 車で 来たんです。\n1) よく 図書館へ 行きますか。\n（いいえ、あまり・うちから 遠いです） →\n2) きのう タワポンさんに 会いましたか。\n（",
+          "content_len": 487
+        },
+        {
+          "rank": 6,
+          "score": 0.16666666666666666,
+          "page": 29,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myGraphRagProject\\data_base\\kownledge_db\\大家的日语初级2（第二版）\\大家的日语初级2（第二版）.pdf",
+          "content_preview": "【第26課】 【第26课】 【练习】\nれんしゅう\n練習B\n26\n1. 例：雨が降っています→雨が降っているんですか。\n1) 山へ行きます→\n2) エレベーターに乗りません→\n3) シュミットさんが作りました→\n4) 眠いです→\n例 1) ししし 2) 3) 4)\n2. 例：いいかばんです・どこで買いましたか（フリーマーケット）\n→いいかばんですね。どこで買ったんですか。\n……フリーマーケットで買い",
+          "content_len": 498
+        },
+        {
+          "rank": 7,
+          "score": 0.14285714285714285,
+          "page": 26,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myGraphRagProject\\data_base\\kownledge_db\\大家的日语初级2（第二版）\\大家的日语初级2（第二版）.pdf",
+          "content_preview": "【第26課】 【第26课】 【语法】\n26\nぶんぽう\n文法\n1.\n动词\nい形容词 普通形 んです\nな形容词 普通形\n名词 ～だ→～な\n「～んです」用于口语。书面语用「～のです」。\n「～んです」的用法如下：\n1) ～んですか\n(1) 说话人对自己见到的、听到的事加以确认或要求对方予以说明时使用。\n① （ぬれた 傘（かさ）を 持（も）っている 人（ひと）を 見（みて）） 雨（あめ）が 降（ふ）っている",
+          "content_len": 516
+        },
+        {
+          "rank": 8,
+          "score": 0.125,
+          "page": 177,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myGraphRagProject\\data_base\\kownledge_db\\大家的日语初级2（第二版）\\大家的日语初级2（第二版）.pdf",
+          "content_preview": "【第38課】 【第38课】\n⑬ 初めて 会ったのは いつですか。\n……3年まえです。\n第一次见面是在什么时候？\n……3年前。\n⑬中强调了说话人想问的是“第一次见面”是在什么时候。\n本句型也经常用来纠正对方所说的事情，如⑭。\n⑭ バンコクで 生まれたんですか。\n……いいえ、生まれたのは チェンマイです。\n你是在曼谷出生的吗？\n……不是，我生在清迈。\n「~のは」之前的句子的主体不用「は」而要用「が」来",
+          "content_len": 252
+        },
+        {
+          "rank": 9,
+          "score": 0.1111111111111111,
+          "page": 29,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myGraphRagProject\\data_base\\kownledge_db\\大家的日语初级2（第二版）\\大家的日语初级2（第二版）.pdf",
+          "content_preview": "【第26課】 【第26课】\n1) 引っ越します（今のうちは狭いです）→\n2) ケーキを食べません（ダイエットをしています）→\n3) 会議に間に合いませんでした（新幹線が遅れました）→\n4) 早く帰ります（きょうは妻の誕生日です）→",
+          "content_len": 115
+        },
+        {
+          "rank": 10,
+          "score": 0.1,
+          "page": 137,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myGraphRagProject\\data_base\\kownledge_db\\大家的日语初级2（第二版）\\大家的日语初级2（第二版）.pdf",
+          "content_preview": "3. 疑问句 动词假定形 いいですか\n表示说话人向听话人寻求建议和指示。和第26课学习过的「～たら いいですか」用法相同。\n⑪ 本を 借りたいんですが、どう すれば いいですか。\n我想借书，怎么做好呢？\n⑫ 本を 借りたいんですが、どう したら いいですか。\n我想借书，怎么做才好呢？（第26课）\n\n4. 名词なら、～\n在听了对方所说的事情后，就这一事情提供一些信息时可使用「名词なら、～」。\n⑬ 温",
+          "content_len": 487
+        }
+      ],
+      "metrics": {
+        "hit_at_k": 1.0,
+        "recall_at_k": 0.4166666666666667,
+        "mrr": 1.0,
+        "page_overlap": 0.8,
+        "keyword_hit_rate": 0.9,
+        "retrieval_latency_ms": 230.73
+      },
+      "matched_ranks": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        9,
+        10
+      ],
+      "error": null
+    },
+    {
+      "case_id": "cross_lang_kaiwa_jp2",
+      "query": "会话",
+      "top_k": 10,
+      "retrieved": [
+        {
+          "rank": 1,
+          "score": 1.0,
+          "page": 133,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myGraphRagProject\\data_base\\kownledge_db\\大家的日语初级2（第二版）\\大家的日语初级2（第二版）.pdf",
+          "content_preview": "【第35課】 【第35课】 【会话/对话】\nMP3 28 かいわ\n会話",
+          "content_len": 35
+        },
+        {
+          "rank": 2,
+          "score": 0.5,
+          "page": 19,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myGraphRagProject\\data_base\\kownledge_db\\大家的日语初级2（第二版）\\大家的日语初级2（第二版）.pdf",
+          "content_preview": "【第45课】 【会话/对话】\n第45課 .................................................................................... 238\n1. カードを なくした 場合は、すぐ カード会社に 連絡して\nください。\n2. 約束を したのに、彼女は 来ませんでした。\n会話：コースを まちがえた 場合は、どう したら いいで",
+          "content_len": 296
+        },
+        {
+          "rank": 3,
+          "score": 0.3333333333333333,
+          "page": 17,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myGraphRagProject\\data_base\\kownledge_db\\大家的日语初级2（第二版）\\大家的日语初级2（第二版）.pdf",
+          "content_preview": "【第31课】 【会话/对话】\n第31課 .................................................................... 64\n1. いっしょに 行こう。\n2. 将来 自分の 会社を 作ろうと 思って います。\n3. 来月 車を 買う つもりです。\n会話：料理を 習おうと 思って います\n\n第32課 .....................",
+          "content_len": 508
+        },
+        {
+          "rank": 4,
+          "score": 0.25,
+          "page": 20,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myGraphRagProject\\data_base\\kownledge_db\\大家的日语初级2（第二版）\\大家的日语初级2（第二版）.pdf",
+          "content_preview": "【第46课】 【会话/对话】\nだい か\n第46課 ........................................................................ 252\n1. 会議は 今から 始まる ところです。\n2. 彼は 3月に 大学を 卒業した ばかりです。\n3. ミラーさんは 会議室に いる はずです。\n会話:先週 直して もらった ばかりなのに、また……",
+          "content_len": 495
+        },
+        {
+          "rank": 5,
+          "score": 0.2,
+          "page": 297,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myGraphRagProject\\data_base\\kownledge_db\\大家的日语初级2（第二版）\\大家的日语初级2（第二版）.pdf",
+          "content_preview": "【第48課】 【第48课】 【会话/对话】\nMP3 67 会話\n休ませて いただけませんか\nミラー：課長、今 お忙しいですか。\n中村課長：いいえ、どうぞ。\nミラー：ちょっと お願いが あるんですが……。\n中村課長：何ですか。\nミラー：あのう、来月 7日から 10日ほど 休みを 取らせて\nいただけませんか。\n中村課長：10日間ですか。\nミラー：実は アメリカの 友達が 結婚するんです。\n中村課長：そ",
+          "content_len": 309
+        },
+        {
+          "rank": 6,
+          "score": 0.16666666666666666,
+          "page": 11,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myGraphRagProject\\data_base\\kownledge_db\\大家的日语初级2（第二版）\\大家的日语初级2（第二版）.pdf",
+          "content_preview": "【第26课】\n有效的使用方法\n\n1. 记单词\n“学习辅导用书”的各课都有新的单词和\n译文出现。我们可以一边用这些新单词\n进行造句练习，一边记住它们。\n\n2. 做句型练习\n抓住句型的正确含义，出声做“练习A”\n和“练习B”，反复练习至完全掌握为止。\n\n3. 做会话练习\n“练习C”是一段比较简短而完整的会话。\n不要只做简单模式的练习，要继续话题，\n充实会话内容。\n\nviii\n会话中所列举的都是日常生活",
+          "content_len": 498
+        },
+        {
+          "rank": 7,
+          "score": 0.14285714285714285,
+          "page": 6,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myGraphRagProject\\data_base\\kownledge_db\\大家的日语初级2（第二版）\\大家的日语初级2（第二版）.pdf",
+          "content_preview": "前言",
+          "content_len": 2
+        },
+        {
+          "rank": 8,
+          "score": 0.125,
+          "page": 173,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myGraphRagProject\\data_base\\kownledge_db\\大家的日语初级2（第二版）\\大家的日语初级2（第二版）.pdf",
+          "content_preview": "【第38課】 【第38课】 【会话/对话】\nMP3 37\n会話\nかた  す\n片づけるのが 好きなんです",
+          "content_len": 51
+        },
+        {
+          "rank": 9,
+          "score": 0.1111111111111111,
+          "page": 8,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myGraphRagProject\\data_base\\kownledge_db\\大家的日语初级2（第二版）\\大家的日语初级2（第二版）.pdf",
+          "content_preview": "II. 内容\n1. 主教材\n1) 课文\n课文从第26课开始至第50课，与《大家的日语 初级1(第二版)》(全25课)\n衔接，内容构成如下。\n① 句型\n列举各课所学基本句型。\n② 例句\n以一问一答的简短会话形式提示基本句型在日常生活中是如何使用的。另外\n还有新出现的副词和接续词的使用方法以及基本句型以外的学习项目。\n③ 会话\n由生活在日本的外国人展现在各种各样的场面下进行的会话。各课的学习内\n容中还",
+          "content_len": 458
+        },
+        {
+          "rank": 10,
+          "score": 0.1,
+          "page": 352,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myGraphRagProject\\data_base\\kownledge_db\\大家的日语初级2（第二版）\\大家的日语初级2（第二版）.pdf",
+          "content_preview": "【第50課】 【第50课】 【会话/对话】\nがいこく(外国)\nかいしゃ(会社)\n~がいしゃ(~会社)\nかいしゃいん(会社員)\nかいじょう(会場)\nかいだん(階段)\nかいちゅうでんとう(懐中電灯)\nガイド\nガイドブック\nかいます(買います)\nかいます(飼います)\nかいものをします(買い物します)\nかいらん(回覧)\nかいわ(会話)\nかえします(返します)\nかえってきます\n(帰ってきます)\nかえます(換",
+          "content_len": 518
+        }
+      ],
+      "metrics": {
+        "hit_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "mrr": 1.0,
+        "page_overlap": 0.0,
+        "keyword_hit_rate": 0.7,
+        "retrieval_latency_ms": 251.36
+      },
+      "matched_ranks": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        8,
+        10
+      ],
+      "error": null
+    }
+  ],
+  "aggregate": {
+    "avg_hit_at_k": 1.0,
+    "avg_keyword_hit_rate": 0.39999999999999997,
+    "avg_mrr": 0.5972222222222222,
+    "avg_page_overlap": 0.23333333333333336,
+    "avg_recall_at_k": 0.5694444444444444,
+    "avg_retrieval_latency_ms": 267.685,
+    "n_cases": 6.0,
+    "n_errors": 0.0
+  }
+}

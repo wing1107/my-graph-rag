@@ -1,0 +1,537 @@
+{
+  "meta": {
+    "dataset": "lesson25",
+    "embedding": "multilingual",
+    "top_k": 10,
+    "persist_path": "C:\\Workspace\\other\\AI_Practice\\mytest\\myGraphRagProject\\data_base\\vector_db\\faiss_multilingual",
+    "retriever": "hybrid",
+    "timestamp": "2026-06-29T15:35:01",
+    "notes": null
+  },
+  "cases": [
+    {
+      "case_id": "lesson25_kaiwa",
+      "query": "第25课的会话内容是什么？",
+      "top_k": 10,
+      "retrieved": [
+        {
+          "rank": 1,
+          "score": 1.0,
+          "page": 330,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myRagProject\\data_base\\kownledge_db\\大家的日语 初级1\\大家的日语 初级1.pdf",
+          "content_preview": "【第25課】 【第25课】 【语法】\n文法\n\n1. 普通形過去ら、～（主句） 如果……的话\n\n动词、形容词、名词的普通形的过去时接「ら」，表示假定条件，其后接续的句子（主句）表示在那一假定条件下所成立的内容。主句可以说是说话人的意志、愿望、劝诱、委托、请求等。\n\n① お金が あったら、旅行します。\n如果有钱的话，就去旅行。\n\n② 時間が なかったら、テレビを 見ません。\n如果没有时间的话，就不看电",
+          "content_len": 472
+        },
+        {
+          "rank": 2,
+          "score": 0.5,
+          "page": 327,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myRagProject\\data_base\\kownledge_db\\大家的日语 初级1\\大家的日语 初级1.pdf",
+          "content_preview": "【第25課】 【第25课】 【会话/对话】\nMP3 85 かい わ 会話\n\nいろいろ お世話に なりました\n\nきむら\n木村 ： 転勤、おめでとう ございます。\n\nミラ－ ： ありがとうございます。\n\nきむら\n木村 ： ミラ－さんが どうきょう い さび\n東京へ 行ったら、寂しく なりますね。\n\nさとう\n佐藤 ： そうですよね。\n\nきむら\n木村 ： どうきょう い おおさか わす\n東京へ 行っても、",
+          "content_len": 479
+        },
+        {
+          "rank": 3,
+          "score": 0.3333333333333333,
+          "page": 8,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myRagProject\\data_base\\kownledge_db\\大家的日语 初级1\\大家的日语 初级1.pdf",
+          "content_preview": "致本书学习者\n\nⅠ．构成\n\n《大家的日语 初级1（第二版）》由“主教材（附有MP3光盘）”和“学习辅导用书”构成。\n\n本教科书以掌握日语的听、说、读、写四项技能为目的编写而成。但在“主教材（附有MP3光盘）”和“学习辅导用书”中不包括平假名、片假名、汉字等的读写指导。\n\nⅡ．内容\n\n1．主教材\n\n1) 日语的发音\n\n列举出日语发音时必须注意的要点的主要示例。\n\n2) 课堂用语、日常会话、数字\n\n收",
+          "content_len": 494
+        },
+        {
+          "rank": 4,
+          "score": 0.25,
+          "page": 328,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myRagProject\\data_base\\kownledge_db\\大家的日语 初级1\\大家的日语 初级1.pdf",
+          "content_preview": "【第25課】 【第25课】 【单词/词汇】\n単語\n\nもし［～たら］\nおく（億）　　　　　　　　　　〈名〉　　　　　　亿\n考えます（←考える④③）　　〈動Ⅱ〉　　　　　考虑、想\nいみ（意味）①　　　　　　　　〈名〉　　　　　　意思\nてんきん（転勤）①　　　　　　〈名〉　　　　　　调动工作（～します：调动工作）\nこと②　　　　　　　　　　　　〈名〉　　　　　　事情（～のこと：～事）\nひま（暇）①　　　",
+          "content_len": 293
+        },
+        {
+          "rank": 5,
+          "score": 0.2,
+          "page": 11,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myRagProject\\data_base\\kownledge_db\\大家的日语 初级1\\大家的日语 初级1.pdf",
+          "content_preview": "有效的使用方法\n\n1. 记单词\n“学习辅导用书”的各课都有新的单词和\n译文出现。我们可以一边用这些新单词\n进行造句练习，一边记住它们。\n\n2. 做句型练习\n抓住句型的正确含义，出声做“练习 A”\n和“练习 B”，反复练习至完全掌握为止。\n\n3. 做会话练习\n“练习 C”是一段比较简短而完整的会话。\n不要只做简单模式的练习，要继续话题，\n充实会话内容。\n\n会话中所列举的都是日常生活中会遇到\n的场面。",
+          "content_len": 353
+        },
+        {
+          "rank": 6,
+          "score": 0.16666666666666666,
+          "page": 20,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myRagProject\\data_base\\kownledge_db\\大家的日语 初级1\\大家的日语 初级1.pdf",
+          "content_preview": "【第23课】 【会话/对话】\n復習F…………………………………………………………… 280\n\n第23課 ………………………………………………………… 282\n1．図書館で 本を 借りる とき、カードが 要ります。\n2．この ボタンを 押すと、お釣りが 出ます。\n会話：どうやって 行きますか\n\n第24課 ………………………………………………………… 294\n1．佐藤さんは わたしに チョコレートを ",
+          "content_len": 494
+        },
+        {
+          "rank": 7,
+          "score": 0.14285714285714285,
+          "page": 9,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myRagProject\\data_base\\kownledge_db\\大家的日语 初级1\\大家的日语 初级1.pdf",
+          "content_preview": "⑧ 复习  \n每隔几课有学习要点的整理。  \n\n⑨ 副词、接续词与会话表现的归纳  \n有为了整理归纳本教科书中所学副词、接续词和会话表现的习题。  \n\n4) 动词的形态  \n本教科书中所学的动词形态与其后续句一起收录于书后。  \n\n5) 学习项目一览  \n以练习 A 为中心，对本教科书出现的学习项目进行了整理归纳，使练习 A 与  \n句型、例句、练习 B、练习 C 的关系清晰明了。  \n\n6) 索",
+          "content_len": 432
+        },
+        {
+          "rank": 8,
+          "score": 0.125,
+          "page": 326,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myRagProject\\data_base\\kownledge_db\\大家的日语 初级1\\大家的日语 初级1.pdf",
+          "content_preview": "【第25课】 【例句】 【句型】\n第25課\n\n文型\n\n1. 雨が降ったら、出かけません。\n2. 雨が降っても、出かけます。\n\n例文\n\n1. もし1億円あつたら、何をしたいですか。\n　学校を作りたいです。\n\n2. 電車やバスが動かなかったら、どうしますか。\n　歩いて帰ります。\n\n3. あの新しい靴屋はいい靴がたくさんありますよ。\n　……そうですか。安かったら、買いたいです。\n\n4. あしたも来なけれ",
+          "content_len": 439
+        },
+        {
+          "rank": 9,
+          "score": 0.1111111111111111,
+          "page": 9,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myRagProject\\data_base\\kownledge_db\\大家的日语 初级1\\大家的日语 初级1.pdf",
+          "content_preview": "在练习 B 中，使用各种反复练习的形式，以求加强对基本句型的掌握。带有  \n→符号的表示使用图表练习。  \n\n练习 C 是为了培养交流能力的练习。根据情况替换会话中原有的有下划线  \n的部分进行会话。但是为了避免变成一种只是单纯地进行词语替换的练习，  \n采用了尽可能不使用文字来显示替换选择的方式，因此不同的学习者可以从  \n同一张图想出不同的内容进行会话，是一项灵活运用程度较高的练习。  \n\n练",
+          "content_len": 466
+        },
+        {
+          "rank": 10,
+          "score": 0.1,
+          "page": 330,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myRagProject\\data_base\\kownledge_db\\大家的日语 初级1\\大家的日语 初级1.pdf",
+          "content_preview": "【第25課】 【第25课】\n時間があると、\n- コンサートに 行きます。（意志）\n- コンサートに 行きたいです。（愿望）\n- コンサートに 行きませんか。（劝诱）\n- ちょっと 手伝って ください。（请求）\n\n2. 动词た形ら、～（主句） 如果……了，就……\n\n在知道某一情况将会达成时，用「动词た形ら」这一句型来表示在前面的情况达成后，后面主句所表示的动作、事态也将成立。\n\n⑥ 10時になったら",
+          "content_len": 256
+        }
+      ],
+      "metrics": {
+        "hit_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "mrr": 0.5,
+        "page_overlap": 0.1,
+        "keyword_hit_rate": 0.2,
+        "retrieval_latency_ms": 549.02
+      },
+      "matched_ranks": [
+        2,
+        6
+      ],
+      "error": null
+    },
+    {
+      "case_id": "lesson25_vocab",
+      "query": "第25课的单词有哪些？",
+      "top_k": 10,
+      "retrieved": [
+        {
+          "rank": 1,
+          "score": 1.0,
+          "page": 328,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myRagProject\\data_base\\kownledge_db\\大家的日语 初级1\\大家的日语 初级1.pdf",
+          "content_preview": "【第25課】 【第25课】 【单词/词汇】\n単語\n\nもし［～たら］\nおく（億）　　　　　　　　　　〈名〉　　　　　　亿\n考えます（←考える④③）　　〈動Ⅱ〉　　　　　考虑、想\nいみ（意味）①　　　　　　　　〈名〉　　　　　　意思\nてんきん（転勤）①　　　　　　〈名〉　　　　　　调动工作（～します：调动工作）\nこと②　　　　　　　　　　　　〈名〉　　　　　　事情（～のこと：～事）\nひま（暇）①　　　",
+          "content_len": 293
+        },
+        {
+          "rank": 2,
+          "score": 0.5,
+          "page": 304,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myRagProject\\data_base\\kownledge_db\\大家的日语 初级1\\大家的日语 初级1.pdf",
+          "content_preview": "【第23課】 【第23课】 【单词/词汇】\n単語",
+          "content_len": 24
+        },
+        {
+          "rank": 3,
+          "score": 0.3333333333333333,
+          "page": 329,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myRagProject\\data_base\\kownledge_db\\大家的日语 初级1\\大家的日语 初级1.pdf",
+          "content_preview": "【第25課】 【第25课】\nどうぞお元気で。\n\nいなか（田舎）①　　　　　　　〈名〉\n着きます（←着く①②）　　　　〈動Ｉ〉\n足ります（←足りる①）　　　　〈動Ⅱ〉\nチャンス（chance）①　　　　　〈名〉\n取ります（←取る①）　　　　　〈動Ｉ〉\n年を取ります。\nもしもし①　　　　　　　　　　〈感〉\nベトナム①　　　　　　　　　　〈名〉\n\n请多保重。祝你健康。（长期分别时使用）\n乡下、老家\n到、",
+          "content_len": 240
+        },
+        {
+          "rank": 4,
+          "score": 0.25,
+          "page": 90,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myRagProject\\data_base\\kownledge_db\\大家的日语 初级1\\大家的日语 初级1.pdf",
+          "content_preview": "【第6課】 【第6课】 【单词/词汇】\n単語",
+          "content_len": 22
+        },
+        {
+          "rank": 5,
+          "score": 0.2,
+          "page": 180,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myRagProject\\data_base\\kownledge_db\\大家的日语 初级1\\大家的日语 初级1.pdf",
+          "content_preview": "【第13課】 【第13课】 【单词/词汇】\n単語",
+          "content_len": 24
+        },
+        {
+          "rank": 6,
+          "score": 0.16666666666666666,
+          "page": 290,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myRagProject\\data_base\\kownledge_db\\大家的日语 初级1\\大家的日语 初级1.pdf",
+          "content_preview": "【第22課】 【第22课】 【单词/词汇】\n単語",
+          "content_len": 24
+        },
+        {
+          "rank": 7,
+          "score": 0.14285714285714285,
+          "page": 66,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myRagProject\\data_base\\kownledge_db\\大家的日语 初级1\\大家的日语 初级1.pdf",
+          "content_preview": "【第4課】 【第4课】 【单词/词汇】\n単語",
+          "content_len": 22
+        },
+        {
+          "rank": 8,
+          "score": 0.125,
+          "page": 330,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myRagProject\\data_base\\kownledge_db\\大家的日语 初级1\\大家的日语 初级1.pdf",
+          "content_preview": "【第25課】 【第25课】\n時間があると、\n- コンサートに 行きます。（意志）\n- コンサートに 行きたいです。（愿望）\n- コンサートに 行きませんか。（劝诱）\n- ちょっと 手伝って ください。（请求）\n\n2. 动词た形ら、～（主句） 如果……了，就……\n\n在知道某一情况将会达成时，用「动词た形ら」这一句型来表示在前面的情况达成后，后面主句所表示的动作、事态也将成立。\n\n⑥ 10時になったら",
+          "content_len": 256
+        },
+        {
+          "rank": 9,
+          "score": 0.1111111111111111,
+          "page": 78,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myRagProject\\data_base\\kownledge_db\\大家的日语 初级1\\大家的日语 初级1.pdf",
+          "content_preview": "【第5課】 【第5课】\n单語",
+          "content_len": 14
+        },
+        {
+          "rank": 10,
+          "score": 0.1,
+          "page": 9,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myRagProject\\data_base\\kownledge_db\\大家的日语 初级1\\大家的日语 初级1.pdf",
+          "content_preview": "⑧ 复习  \n每隔几课有学习要点的整理。  \n\n⑨ 副词、接续词与会话表现的归纳  \n有为了整理归纳本教科书中所学副词、接续词和会话表现的习题。  \n\n4) 动词的形态  \n本教科书中所学的动词形态与其后续句一起收录于书后。  \n\n5) 学习项目一览  \n以练习 A 为中心，对本教科书出现的学习项目进行了整理归纳，使练习 A 与  \n句型、例句、练习 B、练习 C 的关系清晰明了。  \n\n6) 索",
+          "content_len": 432
+        }
+      ],
+      "metrics": {
+        "hit_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "mrr": 1.0,
+        "page_overlap": 0.2,
+        "keyword_hit_rate": 0.7,
+        "retrieval_latency_ms": 342.83
+      },
+      "matched_ranks": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "error": null
+    },
+    {
+      "case_id": "lesson25_grammar",
+      "query": "第25课的语法",
+      "top_k": 10,
+      "retrieved": [
+        {
+          "rank": 1,
+          "score": 1.0,
+          "page": 218,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myRagProject\\data_base\\kownledge_db\\大家的日语 初级1\\大家的日语 初级1.pdf",
+          "content_preview": "【第16課】 【第16课】 【语法】\n文法",
+          "content_len": 21
+        },
+        {
+          "rank": 2,
+          "score": 0.5,
+          "page": 330,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myRagProject\\data_base\\kownledge_db\\大家的日语 初级1\\大家的日语 初级1.pdf",
+          "content_preview": "【第25課】 【第25课】 【语法】\n文法\n\n1. 普通形過去ら、～（主句） 如果……的话\n\n动词、形容词、名词的普通形的过去时接「ら」，表示假定条件，其后接续的句子（主句）表示在那一假定条件下所成立的内容。主句可以说是说话人的意志、愿望、劝诱、委托、请求等。\n\n① お金が あったら、旅行します。\n如果有钱的话，就去旅行。\n\n② 時間が なかったら、テレビを 見ません。\n如果没有时间的话，就不看电",
+          "content_len": 472
+        },
+        {
+          "rank": 3,
+          "score": 0.3333333333333333,
+          "page": 329,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myRagProject\\data_base\\kownledge_db\\大家的日语 初级1\\大家的日语 初级1.pdf",
+          "content_preview": "【第25課】 【第25课】\nどうぞお元気で。\n\nいなか（田舎）①　　　　　　　〈名〉\n着きます（←着く①②）　　　　〈動Ｉ〉\n足ります（←足りる①）　　　　〈動Ⅱ〉\nチャンス（chance）①　　　　　〈名〉\n取ります（←取る①）　　　　　〈動Ｉ〉\n年を取ります。\nもしもし①　　　　　　　　　　〈感〉\nベトナム①　　　　　　　　　　〈名〉\n\n请多保重。祝你健康。（长期分别时使用）\n乡下、老家\n到、",
+          "content_len": 240
+        },
+        {
+          "rank": 4,
+          "score": 0.25,
+          "page": 304,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myRagProject\\data_base\\kownledge_db\\大家的日语 初级1\\大家的日语 初级1.pdf",
+          "content_preview": "【第23課】 【第23课】 【单词/词汇】\n単語",
+          "content_len": 24
+        },
+        {
+          "rank": 5,
+          "score": 0.2,
+          "page": 255,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myRagProject\\data_base\\kownledge_db\\大家的日语 初级1\\大家的日语 初级1.pdf",
+          "content_preview": "【第19課】 【第19课】\n4. い形容词(～い) → ～く\nな形容词[な] → ～に\n名词に\nなります\n变成……\n「なります」表示状态的变化。\n⑥ 寒い → 寒くなります 变冷\n⑦ 元気 [な] → 元気に なります 恢复健康\n⑧ 25 歳 → 25歳に なります 到 25 岁",
+          "content_len": 140
+        },
+        {
+          "rank": 6,
+          "score": 0.16666666666666666,
+          "page": 78,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myRagProject\\data_base\\kownledge_db\\大家的日语 初级1\\大家的日语 初级1.pdf",
+          "content_preview": "【第5課】 【第5课】\n单語",
+          "content_len": 14
+        },
+        {
+          "rank": 7,
+          "score": 0.14285714285714285,
+          "page": 8,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myRagProject\\data_base\\kownledge_db\\大家的日语 初级1\\大家的日语 初级1.pdf",
+          "content_preview": "致本书学习者\n\nⅠ．构成\n\n《大家的日语 初级1（第二版）》由“主教材（附有MP3光盘）”和“学习辅导用书”构成。\n\n本教科书以掌握日语的听、说、读、写四项技能为目的编写而成。但在“主教材（附有MP3光盘）”和“学习辅导用书”中不包括平假名、片假名、汉字等的读写指导。\n\nⅡ．内容\n\n1．主教材\n\n1) 日语的发音\n\n列举出日语发音时必须注意的要点的主要示例。\n\n2) 课堂用语、日常会话、数字\n\n收",
+          "content_len": 494
+        },
+        {
+          "rank": 8,
+          "score": 0.125,
+          "page": 290,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myRagProject\\data_base\\kownledge_db\\大家的日语 初级1\\大家的日语 初级1.pdf",
+          "content_preview": "【第22課】 【第22课】 【单词/词汇】\n単語",
+          "content_len": 24
+        },
+        {
+          "rank": 9,
+          "score": 0.1111111111111111,
+          "page": 90,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myRagProject\\data_base\\kownledge_db\\大家的日语 初级1\\大家的日语 初级1.pdf",
+          "content_preview": "【第6課】 【第6课】 【单词/词汇】\n単語",
+          "content_len": 22
+        },
+        {
+          "rank": 10,
+          "score": 0.1,
+          "page": 331,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myRagProject\\data_base\\kownledge_db\\大家的日语 初级1\\大家的日语 初级1.pdf",
+          "content_preview": "5. 从属句中的主语  \n\n在第16课2中我们学习了「～てから」中的主语用「が」来表示。与「～てから」「～とき」「～と」「～まえに」等一样，在「～たら」「～ても」中，从属句的主语也用「が」表示。  \n\n⑬ 友達が来るまえに、部屋を掃除します。  \n在朋友来之前，要把房间打扫干净。（第18课）  \n\n⑭ 妻が病気のとき、会社を休みます。  \n妻子生病的时候，跟公司请假。（第23课）  \n\n⑮ 友達が",
+          "content_len": 245
+        }
+      ],
+      "metrics": {
+        "hit_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "mrr": 1.0,
+        "page_overlap": 0.1,
+        "keyword_hit_rate": 0.3,
+        "retrieval_latency_ms": 337.63
+      },
+      "matched_ranks": [
+        1,
+        2,
+        10
+      ],
+      "error": null
+    },
+    {
+      "case_id": "cross_lang_kaiwa_keyword",
+      "query": "会话",
+      "top_k": 10,
+      "retrieved": [
+        {
+          "rank": 1,
+          "score": 1.0,
+          "page": 27,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myRagProject\\data_base\\kownledge_db\\大家的日语 初级1\\大家的日语 初级1.pdf",
+          "content_preview": "【第1課】 【第1课】 【会话/对话】\nMP3 01 会話\n\nはじめまして\n\n佐藤：おはようございます。\n\n山田：おはようございます。\n\n佐藤さん、こちらは マイク・ミラーさんです。\n\nミラー：初めまして。\n\nマイク・ミラーです。\n\nアメリカから来ました。\n\nどうぞ よろしく。\n\n佐藤：佐藤けい子です。\n\nどうぞ よろしく。",
+          "content_len": 163
+        },
+        {
+          "rank": 2,
+          "score": 0.5,
+          "page": 18,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myRagProject\\data_base\\kownledge_db\\大家的日语 初级1\\大家的日语 初级1.pdf",
+          "content_preview": "【第17课】 【会话/对话】\n復習D ……………………………………………………………… 206\n\n第17課 ……………………………………………………………… 208\n1. 写真を 撮らないで ください。\n2. パスポートを 見せなければ なりません。\n3. 日曜日は 早く 起きなくても いいです。\n会話：どう しましたか",
+          "content_len": 161
+        },
+        {
+          "rank": 3,
+          "score": 0.3333333333333333,
+          "page": 277,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myRagProject\\data_base\\kownledge_db\\大家的日语 初级1\\大家的日语 初级1.pdf",
+          "content_preview": "【第21課】 【第21课】 【会话/对话】\nMP3 72 会話\n\nわたしも そう 思います\n\nまつもと\n松本 ： あ、サントスさん、久しぶりですね。\n　　　　まつもと　　　　けんき\nサントス： あ、松本さん、お元気ですか。\n　　　　まつもと　　　　　　　　　　　　　の\n松本 ： ええ。 ちょっと ビールでも 飲みませんか。\nサントス： いいですね。\n\n……………………………………\n\n　　　　こんば",
+          "content_len": 350
+        },
+        {
+          "rank": 4,
+          "score": 0.25,
+          "page": 101,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myRagProject\\data_base\\kownledge_db\\大家的日语 初级1\\大家的日语 初级1.pdf",
+          "content_preview": "【第7課】 【第7课】 【会话/对话】\nMP3 24 かい わ 会話\n\nいらっしゃい\n\nやまだ いちろう\n山田一郎 ： はい。\n\nジョゼ・サントス： サントスです。\n\nやまだ いちろう\n山田一郎 ： いらっしゃい。 どうぞ お上がり ください。\n\nジョゼ・サントス： 失礼します。\n\nやまだ ともこ\n山田友子 ： コーヒーは いかがですか。\n\nマリア・サントス： ありがとうございます。\n\nやまだ と",
+          "content_len": 305
+        },
+        {
+          "rank": 5,
+          "score": 0.2,
+          "page": 229,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myRagProject\\data_base\\kownledge_db\\大家的日语 初级1\\大家的日语 初级1.pdf",
+          "content_preview": "【第17課】 【第17课】 【会话/对话】\nかい わ\nMP3 60 会話\n\nどう しましたか\n\n医者： どう しましたか。\n松本： きのうから のどが 痛くて、熱も 少し あります。\n医者： そうですか。 ちょっと 口を 開けて ください。\n\n医者： かぜですね。 2、3日 ゆっくり 休んで ください。\n松本： あのう、あしたから 東京へ 出張しなければ なりません。\n医者： じゃ、きょうは 薬を",
+          "content_len": 313
+        },
+        {
+          "rank": 6,
+          "score": 0.16666666666666666,
+          "page": 65,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myRagProject\\data_base\\kownledge_db\\大家的日语 初级1\\大家的日语 初级1.pdf",
+          "content_preview": "【第4課】 【第4课】 【会话/对话】\nMP3 12 かい わ 会 話\n\nそちらは なんじ 何時までですか\n\nミラー ： すみません、「あすか」の でんわばんごう 電話番号は なんばん 何番ですか。\n佐藤 ： 「あすか」ですか。 5275の 2725です。\nミラー ： どうも ありがとうございます。\n\n…………………………………………\n\nみせ ひと\n店の 人： はい、「あすか」です。\nミラー ： ",
+          "content_len": 333
+        },
+        {
+          "rank": 7,
+          "score": 0.14285714285714285,
+          "page": 289,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myRagProject\\data_base\\kownledge_db\\大家的日语 初级1\\大家的日语 初级1.pdf",
+          "content_preview": "【第22課】 【第22课】 【会话/对话】\nMP3 75 会話\n\nどんな 部屋を お探しですか\n\n不動産屋： どんな 部屋を お探しですか。\nワン ： そうですわ。\n家賃は 8万円ぐらいで、駅から 遠くない 所が\nいいです。\n\n不動産屋： では、こちらは いかがですか。\n駅から 10分で、家賃は 83,000円です。\nワン ： ダイニングキッチンと 和室ですね。\nすみません。 ここは 何ですか。\n",
+          "content_len": 310
+        },
+        {
+          "rank": 8,
+          "score": 0.125,
+          "page": 127,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myRagProject\\data_base\\kownledge_db\\大家的日语 初级1\\大家的日语 初级1.pdf",
+          "content_preview": "【第9課】 【第9课】 【会话/对话】\nMP3 32 かい わ 会話\n\n残念ですが\n\nきむら\n木村 ： はい。\n\nミラ―： きむら\n　　　　木村さんですか。 ミラ―です。\n\nきむら\n木村 ： ああ、ミラ―さん、こんばんは。 げんき\n　　　　　　　　　　　　　　　　　　　お元気ですか。\n\nミラ―： ええ、元気です。\n　　　　　きむら\n　　　　　あの方、木村さん、クラシックの コンサート、いっしょに\n",
+          "content_len": 478
+        },
+        {
+          "rank": 9,
+          "score": 0.1111111111111111,
+          "page": 11,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myRagProject\\data_base\\kownledge_db\\大家的日语 初级1\\大家的日语 初级1.pdf",
+          "content_preview": "有效的使用方法\n\n1. 记单词\n“学习辅导用书”的各课都有新的单词和\n译文出现。我们可以一边用这些新单词\n进行造句练习，一边记住它们。\n\n2. 做句型练习\n抓住句型的正确含义，出声做“练习 A”\n和“练习 B”，反复练习至完全掌握为止。\n\n3. 做会话练习\n“练习 C”是一段比较简短而完整的会话。\n不要只做简单模式的练习，要继续话题，\n充实会话内容。\n\n会话中所列举的都是日常生活中会遇到\n的场面。",
+          "content_len": 353
+        },
+        {
+          "rank": 10,
+          "score": 0.1,
+          "page": 9,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myRagProject\\data_base\\kownledge_db\\大家的日语 初级1\\大家的日语 初级1.pdf",
+          "content_preview": "在练习 B 中，使用各种反复练习的形式，以求加强对基本句型的掌握。带有  \n→符号的表示使用图表练习。  \n\n练习 C 是为了培养交流能力的练习。根据情况替换会话中原有的有下划线  \n的部分进行会话。但是为了避免变成一种只是单纯地进行词语替换的练习，  \n采用了尽可能不使用文字来显示替换选择的方式，因此不同的学习者可以从  \n同一张图想出不同的内容进行会话，是一项灵活运用程度较高的练习。  \n\n练",
+          "content_len": 466
+        }
+      ],
+      "metrics": {
+        "hit_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "mrr": 1.0,
+        "page_overlap": 0.0,
+        "keyword_hit_rate": 0.8,
+        "retrieval_latency_ms": 377.42
+      },
+      "matched_ranks": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "error": null
+    },
+    {
+      "case_id": "lesson25_overview",
+      "query": "第25课讲了什么？",
+      "top_k": 10,
+      "retrieved": [
+        {
+          "rank": 1,
+          "score": 1.0,
+          "page": 330,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myRagProject\\data_base\\kownledge_db\\大家的日语 初级1\\大家的日语 初级1.pdf",
+          "content_preview": "【第25課】 【第25课】\n時間があると、\n- コンサートに 行きます。（意志）\n- コンサートに 行きたいです。（愿望）\n- コンサートに 行きませんか。（劝诱）\n- ちょっと 手伝って ください。（请求）\n\n2. 动词た形ら、～（主句） 如果……了，就……\n\n在知道某一情况将会达成时，用「动词た形ら」这一句型来表示在前面的情况达成后，后面主句所表示的动作、事态也将成立。\n\n⑥ 10時になったら",
+          "content_len": 256
+        },
+        {
+          "rank": 2,
+          "score": 0.5,
+          "page": 330,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myRagProject\\data_base\\kownledge_db\\大家的日语 初级1\\大家的日语 初级1.pdf",
+          "content_preview": "【第25課】 【第25课】 【语法】\n文法\n\n1. 普通形過去ら、～（主句） 如果……的话\n\n动词、形容词、名词的普通形的过去时接「ら」，表示假定条件，其后接续的句子（主句）表示在那一假定条件下所成立的内容。主句可以说是说话人的意志、愿望、劝诱、委托、请求等。\n\n① お金が あったら、旅行します。\n如果有钱的话，就去旅行。\n\n② 時間が なかったら、テレビを 見ません。\n如果没有时间的话，就不看电",
+          "content_len": 472
+        },
+        {
+          "rank": 3,
+          "score": 0.3333333333333333,
+          "page": 328,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myRagProject\\data_base\\kownledge_db\\大家的日语 初级1\\大家的日语 初级1.pdf",
+          "content_preview": "【第25課】 【第25课】 【单词/词汇】\n単語\n\nもし［～たら］\nおく（億）　　　　　　　　　　〈名〉　　　　　　亿\n考えます（←考える④③）　　〈動Ⅱ〉　　　　　考虑、想\nいみ（意味）①　　　　　　　　〈名〉　　　　　　意思\nてんきん（転勤）①　　　　　　〈名〉　　　　　　调动工作（～します：调动工作）\nこと②　　　　　　　　　　　　〈名〉　　　　　　事情（～のこと：～事）\nひま（暇）①　　　",
+          "content_len": 293
+        },
+        {
+          "rank": 4,
+          "score": 0.25,
+          "page": 329,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myRagProject\\data_base\\kownledge_db\\大家的日语 初级1\\大家的日语 初级1.pdf",
+          "content_preview": "【第25課】 【第25课】\nどうぞお元気で。\n\nいなか（田舎）①　　　　　　　〈名〉\n着きます（←着く①②）　　　　〈動Ｉ〉\n足ります（←足りる①）　　　　〈動Ⅱ〉\nチャンス（chance）①　　　　　〈名〉\n取ります（←取る①）　　　　　〈動Ｉ〉\n年を取ります。\nもしもし①　　　　　　　　　　〈感〉\nベトナム①　　　　　　　　　　〈名〉\n\n请多保重。祝你健康。（长期分别时使用）\n乡下、老家\n到、",
+          "content_len": 240
+        },
+        {
+          "rank": 5,
+          "score": 0.2,
+          "page": 92,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myRagProject\\data_base\\kownledge_db\\大家的日语 初级1\\大家的日语 初级1.pdf",
+          "content_preview": "3. 何を しますか\n这是询问要做什么的疑问句。\n② 月曜日 何を しますか。 星期一干什么？\n京都へ 行きます。 ……去京都。\n③ きのう 何を しましたか。 昨天干什么了？\n……サッカーを しました。 ……去踢足球了。\n\n4. なん 和 なに\n「なん」和「なに」的意思相同。\n以下情况使用「なん」。\n1) 后续单词的词头为「た行」「だ行」「な行」时。\n④ それは 何ですか。 那是什么？\n⑤ 何の",
+          "content_len": 331
+        },
+        {
+          "rank": 6,
+          "score": 0.16666666666666666,
+          "page": 304,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myRagProject\\data_base\\kownledge_db\\大家的日语 初级1\\大家的日语 初级1.pdf",
+          "content_preview": "【第23課】 【第23课】 【单词/词汇】\n単語",
+          "content_len": 24
+        },
+        {
+          "rank": 7,
+          "score": 0.14285714285714285,
+          "page": 183,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myRagProject\\data_base\\kownledge_db\\大家的日语 初级1\\大家的日语 初级1.pdf",
+          "content_preview": "【第13課】 【第13课】\n⑪ あした 京都の お祭りに 行きます。\n　明天去看京都的庆典活动。\n\n4. どこか／何か\n\n「どこか」表示某个地方，「なにか」表示某一物品。「どこか」和「なにか」后面的助词「へ」和「を」可以省略。\n\n⑫ 冬休みは どこか[へ] 行きましたか。\n　……はい。北海道へ スキーに 行きました。\n　寒假去哪儿了吗？\n　……嗯，去北海道滑雪了。\n\n[注] 可以在表示时间的词后面",
+          "content_len": 303
+        },
+        {
+          "rank": 8,
+          "score": 0.125,
+          "page": 78,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myRagProject\\data_base\\kownledge_db\\大家的日语 初级1\\大家的日语 初级1.pdf",
+          "content_preview": "【第5課】 【第5课】\n单語",
+          "content_len": 14
+        },
+        {
+          "rank": 9,
+          "score": 0.1111111111111111,
+          "page": 81,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myRagProject\\data_base\\kownledge_db\\大家的日语 初级1\\大家的日语 初级1.pdf",
+          "content_preview": "5. いつ\n\n询问时间时，除了使用「なんじ」「なんようび」「なんがつなんにち」这样的以「な\nん」构成的疑问词之外，还可以使用疑问词「いつ」。「いつ」之后不用接助词「に」。\n\n⑫ いつ 日本へ 来ましたか。\n3月25日に 来ました。\n什么时候来日本的？\n……3月25号来的。\n\n⑬ いつ 広島へ 行きますか。\n来週 行きます。\n什么时候去广岛？\n……下星期去。\n\n6. ～よ\n\n助词「よ」接在句尾，用于",
+          "content_len": 394
+        },
+        {
+          "rank": 10,
+          "score": 0.1,
+          "page": 92,
+          "source": "c:\\Workspace\\other\\AI_Practice\\mytest\\myRagProject\\data_base\\kownledge_db\\大家的日语 初级1\\大家的日语 初级1.pdf",
+          "content_preview": "【第6課】 【第6课】 【语法】\n文法\n\n1. 名词を 动词(他动词)\n他动词的宾语用助词「を」表示。\n① ジュースを 飲みます。 喝果汁。\n[注]「を」只用来表示助词。\n\n2. 名词を します\n「します」可以接在很多名词之后，使其作为宾语，意思是做该名词所表示的内容。\n下面举几个例子。\n1) 运动、游戏等\nサッカーを します 踢足球 トランプを します 打扑克\n2) 集会、活动\nパーティーを し",
+          "content_len": 375
+        }
+      ],
+      "metrics": {
+        "hit_at_k": 1.0,
+        "recall_at_k": 0.6,
+        "mrr": 1.0,
+        "page_overlap": 0.4,
+        "keyword_hit_rate": 0.4,
+        "retrieval_latency_ms": 286.11
+      },
+      "matched_ranks": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "error": null
+    }
+  ],
+  "aggregate": {
+    "avg_hit_at_k": 1.0,
+    "avg_keyword_hit_rate": 0.48,
+    "avg_mrr": 0.9,
+    "avg_page_overlap": 0.16,
+    "avg_recall_at_k": 0.9199999999999999,
+    "avg_retrieval_latency_ms": 378.602,
+    "n_cases": 5.0,
+    "n_errors": 0.0
+  }
+}

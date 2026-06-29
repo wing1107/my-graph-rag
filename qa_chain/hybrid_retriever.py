@@ -236,19 +236,29 @@ def build_hybrid_retriever(
             "BM25Retriever 不可用，请确认 langchain_community 已安装"
         ) from exc
     EnsembleRetriever = None
+    ensemble_import_path = "(unresolved)"
     try:
         # 常见路径（langchain 0.2+）
         from langchain.retrievers import EnsembleRetriever  # type: ignore
+        ensemble_import_path = "langchain.retrievers"
     except Exception:
         try:
             # 部分版本需要从子模块导入
             from langchain.retrievers.ensemble import EnsembleRetriever  # type: ignore
+            ensemble_import_path = "langchain.retrievers.ensemble"
         except Exception:
             try:
-                # 兼容部分旧版本导入路径
-                from langchain_community.retrievers import EnsembleRetriever  # type: ignore
+                # langchain 1.x 常见位置（classic 分包）
+                from langchain_classic.retrievers import EnsembleRetriever  # type: ignore
+                ensemble_import_path = "langchain_classic.retrievers"
             except Exception:
-                EnsembleRetriever = None
+                try:
+                    # 兼容部分旧版本导入路径
+                    from langchain_community.retrievers import EnsembleRetriever  # type: ignore
+                    ensemble_import_path = "langchain_community.retrievers"
+                except Exception:
+                    EnsembleRetriever = None
+                    ensemble_import_path = "fallback_local_rrf"
 
     # 评估框架已用此默认值固化了 hybrid baseline（pumpkin mrr 0.75→0.83），
     # 不要在不通知用户的情况下偷偷改这两个参数；如果生产侧需要更宽召回，
@@ -283,6 +293,10 @@ def build_hybrid_retriever(
     dense = vectordb.as_retriever(search_kwargs=search_kwargs)
 
     if EnsembleRetriever is not None:
+        logger.info(
+            "EnsembleRetriever import resolved via: %s",
+            ensemble_import_path,
+        )
         inner = EnsembleRetriever(
             retrievers=[dense, bm25],
             weights=list(weights),
@@ -296,6 +310,10 @@ def build_hybrid_retriever(
     else:
         logger.warning(
             "EnsembleRetriever 不可用，降级为本地 RRF fallback 实现"
+        )
+        logger.warning(
+            "EnsembleRetriever import path resolution: %s",
+            ensemble_import_path,
         )
 
         allowed_sources = None

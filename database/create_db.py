@@ -1,4 +1,5 @@
 import base64
+import glob
 import hashlib
 import json
 import logging
@@ -16,27 +17,46 @@ _OCR_CACHE_DIR = os.path.join(_ROOT, "data_base", "ocr_cache")
 OCR_ENGINE_PRIORITY = os.environ.get("OCR_ENGINE", "qwen-vl")
 
 
-def _ocr_cache_path(file_path: str) -> str:
-    """根据文件内容（MD5）生成缓存文件路径。"""
+def _ocr_cache_key(file_path: str) -> str:
+    """根据文件内容生成稳定缓存键（MD5）。"""
     md5 = hashlib.md5()
     with open(file_path, "rb") as f:
         for chunk in iter(lambda: f.read(1 << 20), b""):
             md5.update(chunk)
-    key_hash = md5.hexdigest()
+    return md5.hexdigest()
+
+
+def _ocr_cache_path(file_path: str) -> str:
+    """根据文件内容（MD5）生成缓存文件路径（与文件名无关）。"""
+    key_hash = _ocr_cache_key(file_path)
     os.makedirs(_OCR_CACHE_DIR, exist_ok=True)
-    safe_name = os.path.splitext(os.path.basename(file_path))[0][:40]
-    return os.path.join(_OCR_CACHE_DIR, f"{safe_name}_{key_hash}.json")
+    return os.path.join(_OCR_CACHE_DIR, f"{key_hash}.json")
 
 
 def _load_ocr_cache(file_path: str):
-    cp = _ocr_cache_path(file_path)
-    if not os.path.exists(cp):
-        return None
-    try:
-        with open(cp, "r", encoding="utf-8") as f:
-            return json.load(f)
-    except Exception:
-        return None
+    os.makedirs(_OCR_CACHE_DIR, exist_ok=True)
+    key_hash = _ocr_cache_key(file_path)
+    canonical = os.path.join(_OCR_CACHE_DIR, f"{key_hash}.json")
+    legacy_candidates = glob.glob(os.path.join(_OCR_CACHE_DIR, f"*_{key_hash}.json"))
+    candidates = [canonical] + legacy_candidates
+
+    for cp in candidates:
+        if not os.path.exists(cp):
+            continue
+        try:
+            with open(cp, "r", encoding="utf-8") as f:
+                data = json.load(f)
+            # 兼容旧命名缓存：命中后回填为新命名，后续可直接命中。
+            if cp != canonical:
+                try:
+                    with open(canonical, "w", encoding="utf-8") as wf:
+                        json.dump(data, wf, ensure_ascii=False)
+                except Exception:
+                    pass
+            return data
+        except Exception:
+            continue
+    return None
 
 
 def _save_ocr_cache(file_path: str, docs_data: list):
