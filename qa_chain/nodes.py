@@ -145,6 +145,18 @@ def retrieve_node(state: RAGState, config: RunnableConfig) -> dict:
     # 将中文章节数字（如"第十六章"）规范化为阿拉伯数字（"第16章"），
     # 避免 BM25 因字符不匹配导致章节内容完全检索不到。
     question = _normalize_chapter_numbers(question)
+
+    # 「有哪些 / 所有 / 全部」+ 具体课程 → 该课的语法点分散在多个 chunk，
+    # 默认 top_k=4 只能召回少量语法点；自动扩大召回量避免漏答。
+    _EXHAUSTIVE_RE = _re.compile(r'有哪些|所有|全部|列举|包括哪些|都有什么|包含哪些')
+    _LESSON_RE = _re.compile(r'第\s*\d+\s*[课課章节節]')
+    if _EXHAUSTIVE_RE.search(question) and _LESSON_RE.search(question):
+        scaled_k = max(top_k * 3, 12)
+        logger.info(
+            "[retrieve_node] 列举型课程查询，top_k %d → %d", top_k, scaled_k
+        )
+        top_k = scaled_k
+
     allowed_sources = state.get("source_filter")
 
     logger.info(
@@ -310,7 +322,7 @@ def generate_node(state: RAGState, config: RunnableConfig) -> dict:
     original_question = state["question"]
     chat_history = state.get("chat_history", [])
 
-    context = _build_context(docs) if docs else "（未找到相关文档，请根据你的知识回答）"
+    context = _build_context(docs) if docs else "（知识库中未找到相关文档）"
 
     # 防止 context 过长导致 API 500
     MAX_CONTEXT_CHARS = 9000

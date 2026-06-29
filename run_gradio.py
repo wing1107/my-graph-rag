@@ -28,8 +28,18 @@ sys.path.insert(0, ROOT)
 os.environ["TRANSFORMERS_OFFLINE"] = "1"
 os.environ["HF_HUB_OFFLINE"] = "1"
 
-import gradio as gr
+# ── 提前配置日志，确保后续 import 阶段的 INFO 日志可见 ────────────────────
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
+    datefmt="%H:%M:%S",
+    force=True,
+)
+logger = logging.getLogger("run_gradio")
+logger.info("[1a] import dotenv ...")
 from dotenv import find_dotenv, load_dotenv
+_ = load_dotenv(find_dotenv())
+import gradio as gr
 
 # ── langchain 0.2.x imports ──────────────────────────────────────────────
 from langchain_community.vectorstores import FAISS
@@ -51,15 +61,7 @@ from utils.file_utils import calculate_dest_paths, expand_directory_to_files
 from qa_chain.graph import build_rag_graph, get_empty_state
 from qa_chain.model_to_llm import model_to_llm
 
-_ = load_dotenv(find_dotenv())
-
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
-    datefmt="%H:%M:%S",
-    force=True,
-)
-logger = logging.getLogger("run_gradio")
+logger.info("所有模块加载完成，初始化应用 ...")
 
 # ── 常量 ─────────────────────────────────────────────────────────────────
 LLM_MODEL_DICT = {
@@ -144,7 +146,9 @@ def _inject_lesson_markers(split_docs):
         if match:
             lesson_num = int(match.group(1))
             chapter_char = match.group(2)
-            if page not in page_to_lesson:
+            # 只有模式出现在页首（pos<30）才视为真正的课头标题；
+            # 正文中的交叉引用（如「参照第14課」）出现位置较靠后，需排除。
+            if page not in page_to_lesson and match.start() < 30:
                 page_to_lesson[page] = (lesson_num, chapter_char)
 
     if not page_to_lesson:
@@ -168,12 +172,26 @@ def _inject_lesson_markers(split_docs):
         page = doc.metadata.get('page', -1)
         content = doc.page_content
         markers = []
-        if not lesson_pattern.search(content):
+        existing_match = lesson_pattern.search(content)
+        if not existing_match:
             entry = get_lesson_for_page(page)
             if entry is not None:
                 lesson_num, chapter_char = entry
                 markers.append(f"【第{lesson_num}{chapter_char}】")
+                # 若继承的课号是日文「課」，同步注入中文形式，兼容 BM25 中文查询
+                if chapter_char == '課':
+                    markers.append(f"【第{lesson_num}课】")
                 lesson_injected_count += 1
+        else:
+            # 页面已有课程号（如「第26課」日文）；额外注入中文形式「【第26课】」，
+            # 让 BM25 能用中文查询字符（课 U+8BFE）命中日文原文（課 U+8AB2）。
+            lesson_num = int(existing_match.group(1))
+            chapter_char = existing_match.group(2)
+            if chapter_char == '課':
+                cn_marker = f"【第{lesson_num}课】"
+                if cn_marker not in content:
+                    markers.append(cn_marker)
+                    lesson_injected_count += 1
         for jp_pattern, cn_label in jp_to_cn_mappings:
             if jp_pattern.search(content) and cn_label not in content:
                 markers.append(cn_label)

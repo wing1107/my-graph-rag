@@ -1,15 +1,19 @@
 # 黄金集：日语教材《大家日本语2》第26课系列检索层回归保护
 #
 # 背景：大家日本语2 是图片型 PDF，经 Qwen-VL OCR 识别后向量化入库。
-# 第26课页码（0-indexed）：
-#   page=12  文型・例文
-#   page=13  会話（どこに ごみを 出したら いいですか）
-#   page=14  練習 A
-#   page=15  練習 B
-#   page=16  練習 B（续）
-#   page=17  練習 C
-#   page=18  問題
-#   page=19  問題（续）
+# 第26课页码（0-indexed，大家的日语初级2（第二版）.pdf）：
+#   page=22  文型・例文
+#   page=23  会話（ごみは どこに 出したら いいですか）
+#   page=24  単語（続）
+#   page=25  単語（続）
+#   page=26  文法
+#   page=27  文法（続）
+#   page=28  練習 A
+#   page=29  練習 B
+#   page=30  練習 B（续）
+#   page=31  練習 C
+#   page=32  問題
+#   page=33  問題（续）
 #
 # 命中判定（OR 关系，任一满足即算命中）：
 #   1) retrieved.page in expected_pages
@@ -19,7 +23,7 @@
 # 向量库：faiss_multilingual（multilingual embedding）
 # 运行：python -m evaluation.cli run --dataset lesson26 --embedding multilingual --retriever hybrid
 dataset: lesson26
-source_filter: "大家日本语2"
+source_filter: "大家的日语初级2（第二版）"
 embedding_hint: multilingual
 notes: |
   种子黄金集，覆盖第26课的五个典型问题（会话/文型/练习 + 跨语言关键词）。
@@ -28,58 +32,63 @@ notes: |
 cases:
   - id: lesson26_kaiwa
     query: "第26课的会话内容是什么？"
-    expected_pages: [13]
+    expected_pages: [23]
     expected_keywords_any:
-      - "どこに ごみを 出したら いいですか"
+      - "ごみは どこに 出したら いいですか"
       - "引っ越しの 荷物"
       - "【会话/对话】"
-    expected_source: "大家日本语2"
+    expected_source: "大家的日语初级2（第二版）"
     notes: |
-      会話页 page=13，场景是米勒搬家后询问垃圾投放规则。
+      会話页 page=23，场景是米勒搬家后询问垃圾投放规则。
       期望进入 top 5。
+      注意：当前存在 BM25 字符问题（日語 課 vs 中文 课），page=23 可能不进 top10，
+      命中依赖【会话/对话】关键词兜底（可能匹配其他课的会話页，属误判）。
 
   - id: lesson26_bunpou
     query: "第26课的文型和例句"
-    expected_pages: [12]
+    expected_pages: [22]
     expected_keywords_any:
       - "旅行なんです"
       - "いただけませんか"
-      - "文 型"
-      - "例 文"
-    expected_source: "大家日本语2"
-    notes: "文型页 page=12，含「～んです」和「～ていただけませんか」两个核心句型。"
+      - "文型"
+      - "例文"
+    expected_source: "大家的日语初级2（第二版）"
+    notes: |
+      文型页 page=22，含「～んです」和「～ていただけませんか」两个核心句型。
+      注意：page=22 已有「第26課」(日語)，marker 注入不重复添加课号前缀，
+      导致 BM25 无法用「第26课」(中文)匹配此页，当前 page=22 不进 top10（retrieval bug）。
 
   - id: lesson26_renshuu
     query: "第26课的练习题"
-    expected_pages: [14, 15, 16, 17]
+    expected_pages: [28, 29, 30, 31]
     expected_keywords_any:
       - "練習"
       - "れんしゅう"
-    expected_source: "大家日本语2"
-    notes: "練習 A/B/C 分布在 page=14-17，命中任一即可。"
+    expected_source: "大家的日语初级2（第二版）"
+    notes: "練習 A/B/C 分布在 page=28-31，命中任一即可。"
 
   - id: lesson26_mondai
     query: "第26课的问题练习"
-    expected_pages: [14, 15, 16, 17, 18, 19]
+    expected_pages: [28, 29, 30, 31, 32, 33]
     expected_keywords_any:
       - "問題"
       - "もんだい"
       - "練習"
       - "れんしゅう"
-    expected_source: "大家日本语2"
+    expected_source: "大家的日语初级2（第二版）"
     notes: |
-      問題页 page=18-19，但 OCR 内容稀少（主要是空白填空格），
-      检索信号弱；放宽到覆盖练习题全范围（14-19），命中任一即可。
+      問題页 page=32-33，OCR 内容稀少（主要是空白填空格），
+      检索信号弱；放宽到覆盖练习题全范围（28-33），命中任一即可。
 
   - id: lesson26_overview
     query: "第26课讲了什么？"
-    expected_pages: [12, 13, 14, 15, 16, 17, 18, 19]
+    expected_pages: [22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33]
     expected_keywords_any:
       - "【第26課】"
-      - "第 26 課"
       - "第26課"
-    expected_source: "大家日本语2"
-    notes: "概括类问题；第26课任一页命中即算通过。"
+      - "第26课"
+    expected_source: "大家的日语初级2（第二版）"
+    notes: "概括类问题；第26课任一页（page=22-33）命中即算通过。"
 
   - id: cross_lang_kaiwa_jp2
     query: "会话"
