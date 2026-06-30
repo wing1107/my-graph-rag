@@ -39,6 +39,7 @@ class GoldenCase:
     expected_source: Optional[str] = None
 
     top_k_override: Optional[int] = None
+    expected_route: Optional[str] = None
 
     # ── 生成层预留字段（本次不实现，YAML 里允许为空） ──
     expected_answer: Optional[str] = None

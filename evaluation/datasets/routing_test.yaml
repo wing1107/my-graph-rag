@@ -1,0 +1,61 @@
+# 路由评估集：用于衡量 Router 对混合问题（A/B/C 类）的收益
+# 运行示例：
+#   python -m evaluation.cli e2e --dataset routing_test --embedding multilingual --retriever hybrid --model glm-4-flash
+#
+# 说明：
+# - A 类：知识库内问题，期望 route=retrieve
+# - B 类：知识库外但需要事实解释，期望 route=direct（交给通用能力）
+# - C 类：闲聊/通用编程，期望 route=direct
+
+dataset: routing_test
+source_filter: "大家的日语"
+embedding_hint: multilingual
+notes: |
+  用于验证 Router 是否能降低非知识库问题的无效检索开销，
+  并保持教材问答效果。
+
+cases:
+  - id: a_lesson25_grammar
+    query: "大家的日语第25课的语法要点是什么？"
+    expected_route: retrieve
+    expected_keywords_any:
+      - "第25課"
+      - "文法"
+    expected_answer_keywords:
+      - "第25"
+      - "语法"
+      - "例句"
+
+  - id: a_n5_n4_verb_summary
+    query: "请按ます形帮我总结第25课和第26课常见动词分类"
+    expected_route: retrieve
+    expected_keywords_any:
+      - "第25課"
+      - "第26課"
+      - "単語"
+    expected_answer_keywords:
+      - "动词"
+      - "ます形"
+      - "第25"
+      - "第26"
+
+  - id: b_quantum_out_of_scope
+    query: "请用通俗中文解释一下量子纠缠"
+    expected_route: direct
+    expected_answer_keywords:
+      - "量子"
+      - "纠缠"
+
+  - id: c_python_class
+    query: "Python 里怎么定义一个类，给一个最小示例"
+    expected_route: direct
+    expected_answer_keywords:
+      - "class"
+      - "__init__"
+
+  - id: c_quicksort_pseudocode
+    query: "给我一个快速排序的伪代码，并说明时间复杂度"
+    expected_route: direct
+    expected_answer_keywords:
+      - "伪代码"
+      - "O(n log n)"

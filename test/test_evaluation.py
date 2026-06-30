@@ -439,23 +439,22 @@ class TestEndToEndGraphEvaluation(unittest.TestCase):
                     f"[{case['id']}] 最终路由应为 end，实际: {result.routing_path[-1]}",
                 )
 
-    def test_irrelevant_case_still_produces_answer_via_fallback(self):
+    def test_irrelevant_case_still_produces_answer_after_rewrite(self):
         """
-        无关问题（grade 全部为 'no'）场景下，grade_documents_node 的兜底逻辑
-        保留第一条文档，管道应跳过 rewrite 直接走 generate，最终仍产出答案。
+        无关问题（grade 全部为 'no'）场景下，grade_documents_node 会清空文档，
+        管道应先触发 rewrite_query，再进入 generate，最终仍产出答案。
         """
         irrelevant_cases = [c for c in self.dataset if not c.get("expected_grade_relevant", True)]
         for case in irrelevant_cases:
             with self.subTest(case_id=case["id"]):
                 result = self._run_pipeline_for_case(case)
-                # 兜底保留了第一条 doc，所以 should_rewrite → generate（不经过 rewrite_query）
-                self.assertNotIn(
+                self.assertIn(
                     "rewrite_query", result.routing_path,
-                    f"[{case['id']}] 兜底机制应让管道跳过 rewrite_query，路由: {result.routing_path}",
+                    f"[{case['id']}] 文档全被过滤后应触发 rewrite_query，路由: {result.routing_path}",
                 )
                 self.assertIsNotNone(
                     result.generation,
-                    f"[{case['id']}] 即使文档无关，兜底后应仍产出答案",
+                    f"[{case['id']}] 即使文档无关，改写后应仍产出答案",
                 )
 
     def test_rewrite_is_triggered_when_vectordb_returns_empty(self):

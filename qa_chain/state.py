@@ -42,6 +42,9 @@ class RAGState(TypedDict):
         检索返回的最大文档数。
     hallucination_flag : bool
         grade_answer_node 的判定：True 表示检测到幻觉，触发 generate 重试。
+    route_decision : str | None
+        router_node 的路由结果："retrieve" 或 "direct"；
+        未经过 router 时为 None。
     """
 
     question: str
@@ -54,6 +57,7 @@ class RAGState(TypedDict):
     embedding: str
     top_k: int
     hallucination_flag: bool
+    route_decision: Optional[str]
 
 
 # 重试次数上限：防止 rewrite_query 和 generate 各自无限循环

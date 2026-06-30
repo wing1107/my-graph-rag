@@ -30,6 +30,7 @@ from langchain_core.runnables import RunnableConfig
 from qa_chain.state import MAX_RETRIES, RAGState
 from qa_chain.prompt_templates import (
     DEFAULT_TEMPLATE,
+    DIRECT_TEMPLATE,
     GRADE_DOC_PROMPT,
     GRADE_ANSWER_PROMPT,
     REWRITE_QUERY_PROMPT,
@@ -124,6 +125,82 @@ def _llm_text(llm: Any, prompt: str) -> str:
     if hasattr(result, "content"):
         return result.content.strip()
     return str(result).strip()
+
+
+# ── Router 轻量关键词预过滤 ────────────────────────────────────────────
+# 命中这些模式的问题大概率需要检索知识库，直接走 retrieve，省一次 LLM 调用
+_RETRIEVE_KEYWORDS = _re.compile(
+    r'第\s*\d+\s*[课課章节節]|南瓜书|西瓜书|大家的日语|初级[12]|N[1-5]'
+    r'|教材|课文|例文|単語|練習|文法|文型|会[话話]',
+    _re.IGNORECASE,
+)
+# 命中这些模式的问题大概率不需要检索，直接走 direct
+_DIRECT_KEYWORDS = _re.compile(
+    r'^(你好|hello|hi|嗨|早上好|晚上好)'
+    r'|伪代码|时间复杂度|空间复杂度|怎么定义.*类|怎么写.*函数'
+    r'|Python|Java|C\+\+|JavaScript'
+    r'|量子|相对论|化学|物理|数学公式'
+    r'|天气|今天|几点了',
+    _re.IGNORECASE,
+)
+
+_ROUTER_PROMPT = """你是一个路由决策器。判断用户问题是否需要检索教材知识库。
+
+知识库内容：日语教材（大家的日语 初级1/初级2）和机器学习教材（南瓜书/西瓜书）。
+
+规则：
+- 问题依赖以上教材内容（章节、课文、语法、单词、公式推导）→ retrieve
+- 通用知识、编程问题、闲聊、通识解释 → direct
+- 只输出一个词
+
+示例：
+问题：第25课的语法要点是什么？ → retrieve
+问题：南瓜书第16章讲了什么？ → retrieve
+问题：Python怎么定义一个类？ → direct
+问题：给我一个快速排序的伪代码 → direct
+问题：请解释量子纠缠 → direct
+问题：你好 → direct
+问题：帮我总结第25课和第26课的动词 → retrieve
+
+用户问题：
+{question}
+"""
+
+
+def router_node(state: RAGState, config: RunnableConfig) -> dict:
+    """路由节点：判断本轮是否需要先检索知识库。
+
+    三级判定：
+    1. 关键词预过滤（零 LLM 调用，<1ms）
+    2. LLM 路由分类（一次 LLM 调用）
+    3. 异常兜底 → retrieve
+    """
+    question = state["question"]
+
+    # ── 第一级：关键词预过滤 ─────────────────────────────────────────
+    if _RETRIEVE_KEYWORDS.search(question):
+        logger.info("[router_node] 关键词命中 retrieve: %r", question)
+        return {"route_decision": "retrieve"}
+    if _DIRECT_KEYWORDS.search(question):
+        logger.info("[router_node] 关键词命中 direct: %r", question)
+        return {"route_decision": "direct"}
+
+    # ── 第二级：LLM 路由分类 ─────────────────────────────────────────
+    llm = _get_configurable(config, "llm")
+    if llm is None:
+        logger.warning("[router_node] 未注入 LLM，默认 route=retrieve")
+        return {"route_decision": "retrieve"}
+
+    prompt = _ROUTER_PROMPT.format(question=question)
+    try:
+        raw = _llm_text(llm, prompt).strip().lower()
+    except Exception as e:
+        logger.warning("[router_node] 路由判定失败: %s，默认 route=retrieve", e)
+        return {"route_decision": "retrieve"}
+
+    route = "retrieve" if "retrieve" in raw else "direct"
+    logger.info("[router_node] question=%r raw=%r -> route=%s", question, raw, route)
+    return {"route_decision": route}
 
 
 # ═══════════════════════════════════════════════════════════════
@@ -322,11 +399,18 @@ def generate_node(state: RAGState, config: RunnableConfig) -> dict:
     original_question = state["question"]
     chat_history = state.get("chat_history", [])
 
-    context = _build_context(docs) if docs else "（知识库中未找到相关文档）"
+    # ── 根据路由决策选择 prompt 模板 ────────────────────────────────
+    is_direct = state.get("route_decision") == "direct"
+
+    if is_direct:
+        # direct 路径：不拼 context，使用通用知识回答
+        context = ""
+    else:
+        context = _build_context(docs) if docs else "（知识库中未找到相关文档）"
 
     # 防止 context 过长导致 API 500
     MAX_CONTEXT_CHARS = 9000
-    if len(context) > MAX_CONTEXT_CHARS:
+    if context and len(context) > MAX_CONTEXT_CHARS:
         context = context[:MAX_CONTEXT_CHARS] + "\n...[内容已截断]"
         logger.warning("[generate_node] context 超过 %d 字符，已截断", MAX_CONTEXT_CHARS)
 
@@ -343,11 +427,14 @@ def generate_node(state: RAGState, config: RunnableConfig) -> dict:
         if lines:
             history_block = "以下是历史对话，仅供理解上下文：\n" + "\n".join(lines) + "\n\n"
 
-    # V4_COT 模板 {context} / {question} 插值
-    prompt = history_block + DEFAULT_TEMPLATE.format(
-        context=context,
-        question=question,
-    )
+    # 路由分支选择模板
+    if is_direct:
+        prompt = history_block + DIRECT_TEMPLATE.format(question=question)
+    else:
+        prompt = history_block + DEFAULT_TEMPLATE.format(
+            context=context,
+            question=question,
+        )
 
     retry_count = state.get("retry_count", 0)
     logger.info(

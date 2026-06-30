@@ -56,6 +56,8 @@ class E2ECaseResult:
     query: str
     final_answer: Optional[str]
     nodes_visited: List[str]           # 按执行顺序排列的节点名列表
+    expected_route: Optional[str]
+    predicted_route: Optional[str]
     metrics: Dict[str, float]          # 所有数值指标
     error: Optional[str] = None
 
@@ -148,6 +150,7 @@ def _run_case(
         "embedding": "",      # vectordb 已由 config 注入，此字段不参与检索
         "top_k": top_k,
         "hallucination_flag": False,
+        "route_decision": None,
     }
     config = {
         "configurable": {
@@ -183,6 +186,12 @@ def _run_case(
     hallucination = float(bool(full_state.get("hallucination_flag", False)))
     retry_count = float(full_state.get("retry_count", 0))
 
+    expected_route = (getattr(case, "expected_route", None) or "").strip().lower() or None
+    state_route = (full_state.get("route_decision") or "").strip().lower() or None
+    predicted_route = state_route
+    if predicted_route not in ("retrieve", "direct"):
+        predicted_route = "retrieve" if retrieval_triggered > 0 else "direct"
+
     # ── 答案质量指标 ─────────────────────────────────────────────
     quality = _answer_quality(final_answer, case)
 
@@ -196,11 +205,18 @@ def _run_case(
         **quality,
     }
 
+    if expected_route in ("retrieve", "direct"):
+        metrics["routing_match"] = 1.0 if predicted_route == expected_route else 0.0
+        metrics["routing_expected_retrieve"] = 1.0 if expected_route == "retrieve" else 0.0
+        metrics["routing_predicted_retrieve"] = 1.0 if predicted_route == "retrieve" else 0.0
+
     return E2ECaseResult(
         case_id=case.id,
         query=case.query,
         final_answer=final_answer,
         nodes_visited=nodes_visited,
+        expected_route=expected_route,
+        predicted_route=predicted_route,
         metrics=metrics,
         error=error_msg,
     )
@@ -219,6 +235,9 @@ _AVG_METRICS = [
     "retry_count",
     "keyword_hit_rate",
     "no_answer_score",
+    "routing_match",
+    "routing_expected_retrieve",
+    "routing_predicted_retrieve",
 ]
 
 _SUM_METRICS = ["forbidden_count"]
@@ -319,6 +338,12 @@ def run_e2e(
             nodes = " → ".join(result.nodes_visited)
             print(f"  latency={lat:.0f}ms  llm_calls={calls:.0f}"
                   f"  kw_hit={khr:.2f}  no_ans={nas:.1f}")
+            if result.expected_route:
+                print(
+                    f"  route: expected={result.expected_route} "
+                    f"predicted={result.predicted_route} "
+                    f"match={result.metrics.get('routing_match', 0.0):.0f}"
+                )
             print(f"  nodes: {nodes}")
         case_results.append(result)
 
@@ -369,6 +394,10 @@ def render_markdown(result: E2EResult) -> str:
         lines.append(f"### `{c.case_id}`")
         lines.append("")
         lines.append(f"- **query**: {c.query}")
+        if c.expected_route:
+            lines.append(
+                f"- **route**: expected={c.expected_route}, predicted={c.predicted_route}"
+            )
         lines.append(f"- **nodes**: {' → '.join(c.nodes_visited)}")
         if c.error:
             lines.append(f"- **ERROR**: {c.error}")
