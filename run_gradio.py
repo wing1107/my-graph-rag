@@ -27,6 +27,22 @@ sys.path.insert(0, ROOT)
 
 os.environ["TRANSFORMERS_OFFLINE"] = "1"
 os.environ["HF_HUB_OFFLINE"] = "1"
+# 关闭 gradio 启动时的版本检查 / 匿名遥测，避免网络不通时卡在 import gradio 等超时
+os.environ["GRADIO_ANALYTICS_ENABLED"] = "False"
+
+# ── 规避 Windows 本机 WMI 卡死 ───────────────────────────────────────────
+# pandas（被 gradio 间接 import）在导入时会调用 platform.machine()，进而触发
+# platform._wmi_query() 去查 Win32_OperatingSystem。当本机 WMI 服务异常时，
+# 该查询会无限阻塞，从而卡住 `import gradio`。这里让 _wmi_query 直接抛 OSError，
+# 强制 platform 走 getwindowsversion()+注册表的快速回退路径（不碰 WMI、不联网）。
+import platform as _platform
+
+
+def _wmi_query_disabled(*_args, **_kwargs):
+    raise OSError("WMI query disabled to avoid hang on broken WMI service")
+
+
+_platform._wmi_query = _wmi_query_disabled
 
 # ── 提前配置日志，确保后续 import 阶段的 INFO 日志可见 ────────────────────
 logging.basicConfig(
@@ -39,13 +55,16 @@ logger = logging.getLogger("run_gradio")
 logger.info("[1a] import dotenv ...")
 from dotenv import find_dotenv, load_dotenv
 _ = load_dotenv(find_dotenv())
+logger.info("[1b] import gradio ...")
 import gradio as gr
 
 # ── langchain 0.2.x imports ──────────────────────────────────────────────
+logger.info("[2] import langchain ...")
 from langchain_community.vectorstores import FAISS
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 # ── 项目内部模块 ──────────────────────────────────────────────────────────
+logger.info("[3] import database ...")
 from database.create_db import (
     file_loader,
     EMBEDDING_META_FILE,
@@ -55,6 +74,7 @@ from database.create_db import (
     save_faiss_db,
     load_faiss_db,
 )
+logger.info("[4] import embedding ...")
 from embedding.call_embedding import get_embedding, clear_embedding_cache
 from llm.call_llm import get_completion
 from utils.file_utils import calculate_dest_paths, expand_directory_to_files
@@ -321,7 +341,7 @@ def build_faiss_db_info(
                 yield "", _status(f"加载文档 ({idx}/{len(loaders)})")
 
         if not docs:
-            yield "未解析到可用文档（支持 .txt/.md/.pdf）。", _status("失败：未解析到文档")
+            yield "未解析到可用文档（支持 .txt/.md/.pdf/.docx）。", _status("失败：未解析到文档")
             return
 
         # ── 切分 ──
@@ -1296,4 +1316,5 @@ with gr.Blocks(css=_MODAL_CSS) as demo:
     """)
 
 gr.close_all()
+port = int(os.getenv("GRADIO_SERVER_PORT", "7860"))
 demo.queue(default_concurrency_limit=2).launch(server_name="0.0.0.0")

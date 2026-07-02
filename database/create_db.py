@@ -76,6 +76,7 @@ from embedding.call_embedding import get_embedding
 from langchain_community.document_loaders import PyMuPDFLoader
 from langchain_community.document_loaders import UnstructuredFileLoader
 from langchain_community.document_loaders import UnstructuredMarkdownLoader
+from langchain_community.document_loaders import UnstructuredWordDocumentLoader
 
 # langchain_text_splitters 独立包（0.2.x 拆出）
 from langchain_text_splitters import RecursiveCharacterTextSplitter
@@ -349,13 +350,15 @@ def file_loader(file, loaders):
     if not os.path.isfile(file):
         [file_loader(os.path.join(file, f), loaders) for f in os.listdir(file)]
         return
-    file_type = file.split(".")[-1]
+    file_type = file.split(".")[-1].lower()
     if file_type == "pdf":
         loaders.append(SmartPDFLoader(file))
     elif file_type == "md":
         loaders.append(UnstructuredMarkdownLoader(file))
     elif file_type == "txt":
         loaders.append(UnstructuredFileLoader(file))
+    elif file_type == "docx":
+        loaders.append(UnstructuredWordDocumentLoader(file))
 
 
 # ── 向量库加载 ─────────────────────────────────────────────────────────────
